@@ -1,15 +1,42 @@
 package com.efe.games.model.sudoku
 
-class NotaCelda (
-    var numeros: Set<Int>,
-    var numerosAnotados: Set<Int>
-) {
+import java.util.*
 
-    fun addNumber(num : Int){
-        numeros = numeros.plus(num)
+class NotaCelda () {
+
+    //Atributos
+    var numeros: Set<Int>
+
+    init {
+        this.numeros = Collections.unmodifiableSet(HashSet())
     }
 
-    fun anotarNumero(num: Int) {
-        if (numerosAnotados.contains(num)) numerosAnotados.minus(num) else numerosAnotados.plus(num)
+    constructor(numeros: Set<Int>) : this() {
+        this.numeros = Collections.unmodifiableSet(numeros)
     }
+
+    fun isEmpty(): Boolean = numeros.isEmpty()
+
+    fun addNumber(numero: Int): NotaCelda {
+        require(!(numero < 1 || numero > 9)) { "El numero debe estar entre 1 y 9" }
+        val aux: MutableSet<Int> = HashSet(numeros)
+        aux.add(numero)
+        return NotaCelda(aux)
+    }
+
+    fun clear(): NotaCelda {
+        return NotaCelda()
+    }
+
+    fun anotarNumero(numero: Int): NotaCelda {
+        require(!(numero < 1 || numero > 9)) { "El numero debe estar entre 1 y 9" }
+        val numerosAnotados: MutableSet<Int> = HashSet(numeros)
+        if (numerosAnotados.contains(numero)) {
+            numerosAnotados.remove(numero)
+        } else {
+            numerosAnotados.add(numero)
+        }
+        return NotaCelda(numerosAnotados)
+    }
+
 }
