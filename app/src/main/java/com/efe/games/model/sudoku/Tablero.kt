@@ -68,18 +68,20 @@ class Tablero(
         return true
     }
 
-    fun getValoresUsados(): MutableMap<Int, Int> {
-        var valoresUsados: MutableMap<Int, Int> = hashMapOf()
-        for (i in 1..9) {
-            valoresUsados[i] = 0
+    fun getValoresUsados(): Map<Int, Int>? {
+        val valuesUseCount: MutableMap<Int, Int> = HashMap()
+        for (value in 1..SUDOKU_SIZE) {
+            valuesUseCount[value] = 0
         }
-        for (i in 0..9) for (j in 0..9) {
-            if (celdas[i][j].value != 0) {
-                val valor = celdas[i][j].value
-                valoresUsados[valor] = 1 + valoresUsados.get(valor)!!
+        for (r in 0 until SUDOKU_SIZE) {
+            for (c in 0 until SUDOKU_SIZE) {
+                val value: Int = celdas[r][c].value
+                if (value != 0) {
+                    valuesUseCount[value] = valuesUseCount[value]!! + 1
+                }
             }
         }
-        return valoresUsados
+        return valuesUseCount
     }
 
     fun validar(): Boolean {

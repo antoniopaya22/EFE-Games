@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">EFE-Games</string>
+
+    <string name="numpad">Pad numérico</string>
+    <string name="numpad_abbr">Pad</string>
+    <string name="pad_numerico_1">1</string>
+    <string name="pad_numerico_2">2</string>
+    <string name="pad_numerico_3">3</string>
+    <string name="pad_numerico_4">4</string>
+    <string name="pad_numerico_5">5</string>
+    <string name="pad_numerico_6">6</string>
+    <string name="pad_numerico_7">7</string>
+    <string name="pad_numerico_8">8</string>
+    <string name="pad_numerico_9">9</string>
+    <string name="pad_numerico_clear">C</string>
+    <string name="pad_numerico_cambiarnumeronota">CambiarNumeroNota</string>
 </resources>

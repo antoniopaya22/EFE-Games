@@ -48,7 +48,7 @@ class CommandStack(private val tablero: Tablero) {
         validarCeldas()
     }
 
-    fun hasSomethingToUndo(): Boolean = commandStack.size !== 0
+    fun hasSomethingToUndo(): Boolean = commandStack.size != 0
 
     private fun push(command: AbstractCommand) {
         if (command is AbstractCeldaCommand) {

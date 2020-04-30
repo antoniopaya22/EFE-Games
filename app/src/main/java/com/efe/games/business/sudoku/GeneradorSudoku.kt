@@ -1,17 +1,43 @@
-package com.efe.games.model.sudoku
+package com.efe.games.business.sudoku
 
+import com.efe.games.model.sudoku.Tablero
 import java.lang.Math.random
 import java.util.*
 
-class GeneradorSudoku {
-    private val ANCHO_TABLERO = 9
-    private val ALTO_TABLERO = 9
+/**
+ * Generador de sudokus - Singleton
+ */
+object GeneradorSudoku {
 
-    var tablero: Array<Array<Int>> = Array (ALTO_TABLERO) { Array (ANCHO_TABLERO) {0} }
+    /**
+     *  ====================================================
+     *                      PROPIEDADES
+     *  ====================================================
+     */
+    var tablero: Array<Array<Int>> = Array (Tablero.SUDOKU_SIZE) { Array (
+        Tablero.SUDOKU_SIZE
+    ) {0} }
 
+    /**
+     *  ====================================================
+     *                      FUNCIONES
+     *  ====================================================
+     */
+
+    /**
+     * Devuelve una matriz con un sudoku.
+     * Coloca 0s en los huecos a rellenar del sudoku.
+     *
+     * @return Array<Array<Int>>
+     */
     fun generar(huecos: Int): Array<Array<Int>> {
-        var realizado: Boolean = resolverCasillas(0,0)
-        while (!realizado) realizado = resolverCasillas(0,0)
+        tablero = Array (
+            Tablero.SUDOKU_SIZE
+        ) { Array (Tablero.SUDOKU_SIZE) {0} }
+        var realizado: Boolean =
+            resolverCasillas(0, 0)
+        while (!realizado) realizado =
+            resolverCasillas(0, 0)
         hacerAgujeros(huecos)
         return tablero
     }
@@ -31,7 +57,12 @@ class GeneradorSudoku {
             valores[i] = temp
         }
         for (i in valores.indices) {
-            if (insertarValorEnCasilla(x, y, valores[i])) {
+            if (insertarValorEnCasilla(
+                    x,
+                    y,
+                    valores[i]
+                )
+            ) {
                 tablero[x][y] = valores[i]
                 if (x == 8) {
                     if (y == 8) return true else {
@@ -41,7 +72,11 @@ class GeneradorSudoku {
                 } else {
                     nextX = x + 1
                 }
-                if (resolverCasillas(nextX, nextY)) return true
+                if (resolverCasillas(
+                        nextX,
+                        nextY
+                    )
+                ) return true
             }
         }
         tablero[x][y] = 0
@@ -72,7 +107,7 @@ class GeneradorSudoku {
     }
 
     private fun hacerAgujeros(huecos: Int) {
-        var casillasRestantes = ANCHO_TABLERO * ALTO_TABLERO
+        var casillasRestantes = Tablero.SUDOKU_SIZE * Tablero.SUDOKU_SIZE
         var huecosRestantes = huecos
         for (i in 0..8) for (j in 0..8) {
             val temp: Double = huecosRestantes.toDouble() / casillasRestantes.toDouble()

@@ -1,12 +1,28 @@
-package com.efe.games.model.sudoku
+package com.efe.games.business.sudoku
 
-class ResuelveSudoku(
-    var tablero: Array<Array<Int>>
-) {
-    private val ANCHO_TABLERO: Int = 9
-    private val ALTO_TABLERO: Int = 9
+import com.efe.games.model.sudoku.Tablero
 
-    fun resolverSudoku(): Array<Array<Int>> {
+object ResuelveSudoku {
+
+    /**
+     *  ====================================================
+     *                      PROPIEDADES
+     *  ====================================================
+     */
+
+    var tablero: Array<Array<Int>> = Array (Tablero.SUDOKU_SIZE) { Array (
+        Tablero.SUDOKU_SIZE
+    ) {0} }
+
+
+    /**
+     *  ====================================================
+     *                      FUNCIONES
+     *  ====================================================
+     */
+
+    fun resolverSudoku(tablero: Array<Array<Int>>): Array<Array<Int>> {
+        this.tablero = tablero
         backtraking(tablero)
         return tablero
     }
@@ -15,9 +31,9 @@ class ResuelveSudoku(
         var temp = false
         var i = 0
         var j = 0
-        while (i < ANCHO_TABLERO) {
+        while (i < Tablero.SUDOKU_SIZE) {
             j = 0
-            while (j < ALTO_TABLERO) {
+            while (j < Tablero.SUDOKU_SIZE) {
                 if (sudoku[i][j] == 0) {
                     temp = true
                     break
@@ -27,7 +43,7 @@ class ResuelveSudoku(
             if (temp) break
             i++
         }
-        if (i == ANCHO_TABLERO || j == ALTO_TABLERO) {
+        if (i == Tablero.SUDOKU_SIZE || j == Tablero.SUDOKU_SIZE) {
             return true
         }
         for (num in 1..9) {
@@ -57,14 +73,14 @@ class ResuelveSudoku(
     }
 
     private fun comprobarColumna(sudoku: Array<Array<Int>>, columna: Int, num: Int): Boolean {
-        for (i in 0 until ANCHO_TABLERO) {
+        for (i in 0 until Tablero.SUDOKU_SIZE) {
             if (sudoku[i][columna] == num) return false
         }
         return true
     }
 
     private fun comprobarFila(sudoku: Array<Array<Int>>, fila: Int, num: Int): Boolean {
-        for (i in 0 until ALTO_TABLERO) {
+        for (i in 0 until Tablero.SUDOKU_SIZE) {
             if (sudoku[fila][i] == num) return false
         }
         return true

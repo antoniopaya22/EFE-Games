@@ -1,5 +1,6 @@
 package com.efe.games.ui.sudoku
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import com.efe.games.R
+import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.NotaCelda
 import com.efe.games.model.sudoku.SudokuGame
@@ -18,8 +20,18 @@ import com.efe.games.model.sudoku.listeners.OnChangeListener
 import com.efe.games.model.sudoku.listeners.OnTocarCeldaListener
 import kotlin.math.roundToInt
 
-
+/**
+ * VIEW - TableroSudoku
+ *
+ * Renderiza un tablero de un sudoku
+ */
 open class TableroSudokuView : View {
+
+    /**
+     *  ====================================================
+     *                      PROPIEDADES
+     *  ====================================================
+     */
 
     private val lineaPaint = Paint() // Linea
     private val lineaSectorPaint = Paint() // Linea sector
@@ -37,22 +49,49 @@ open class TableroSudokuView : View {
     private var altoCelda = 0f
 
     private var celdaPulsada: Celda? = null
-    private var celdaSeleccionada: Celda? = null
-    private val soloLectura = false
-    private val colorearErroneos = true
-    private val colorearPulsados = true
-    private val ocultarPulsados = true
+    var celdaSeleccionada: Celda? = null
 
     private var numeroIzq = 0
     private var numeroArriba = 0
     private var notaArriba = 0f
     private var anchoLineaSector = 0
 
-    private val onTocarCeldaListener: OnTocarCeldaListener? = null
-    private val onCeldaSeleccionadaListener: OnCeldaSeleccionadaListener? = null
+    var soloLectura = false
+    var colorearErroneos = true
+    var colorearPulsados = true
+    var ocultarPulsados = true
 
-    private var game: SudokuGame? = null
+    // Listeners
+    var onTocarCeldaListener: OnTocarCeldaListener? = null
+    var onCeldaSeleccionadaListener: OnCeldaSeleccionadaListener? = null
+
+    var game: SudokuGame? = null
+        set(value) {
+            tablero = value!!.tablero
+            field = value
+        }
+
     private var tablero: Tablero? = null
+        set(value) {
+            if (!soloLectura) {
+                celdaSeleccionada = value!!.celdas[0][0]
+                onCeldaSeleccionada(celdaSeleccionada!!)
+            }
+            value!!.addOnChangeListener(object : OnChangeListener {
+                override fun onChange() {
+                    postInvalidate()
+                }
+            })
+            postInvalidate()
+            field = value
+        }
+
+
+    /**
+     *  ====================================================
+     *              CONSTRANTES / CONSTRUCTORES
+     *  ====================================================
+     */
 
     companion object{
         const val TABLERO_SIZE_DEFAULT = 100
@@ -91,43 +130,76 @@ open class TableroSudokuView : View {
         a.recycle()
     }
 
-    fun setGame(game: SudokuGame){
-        this.game = game
-        setTablero(game.tablero)
+    /**
+     *  ====================================================
+     *                  FUNCIONES
+     *  ====================================================
+     */
+
+    private fun calcularAnchoLineaSector(pxAncho: Int, pxAlto: Int) {
+        val pxSize = if (pxAncho < pxAlto) pxAncho else pxAlto
+        val escala = context.resources.displayMetrics.density
+        val size = pxSize / escala
+        var anchoLineaSectorEscala = 2.0f
+        if (size > 150) {
+            anchoLineaSectorEscala = 3.0f
+        }
+        anchoLineaSector = (anchoLineaSectorEscala * escala).toInt()
     }
 
-    fun setTablero(celdas: Tablero) {
-        tablero = celdas
-        if (tablero != null) {
-            if (!soloLectura) {
-                celdaSeleccionada = tablero!!.celdas[0][0]
-                onCeldaSeleccionada(celdaSeleccionada)
+    fun moverCeldaSeleccionadaADerecha() {
+        if (!moverCeldaSeleccionada(1, 0)) {
+            var selRow = celdaSeleccionada!!.rowIndex
+            selRow++
+            if (!moverCeldaSeleccionadaA(selRow, 0)) {
+                moverCeldaSeleccionadaA(0, 0)
             }
-            tablero!!.addOnChangeListener(object : OnChangeListener {
-                override fun onChange() {
-                    postInvalidate()
-                }
-            })
         }
         postInvalidate()
     }
 
-    private fun setNotaCelda(celda: Celda, nota: NotaCelda) {
-        if (celda.editable) if (game != null)
-            game!!.setNotaCelda(celda, nota) else celda.nota = nota
+
+    private fun moverCeldaSeleccionada(vx: Int, vy: Int): Boolean {
+        var newRow = 0
+        var newCol = 0
+        if (celdaSeleccionada != null) {
+            newRow = celdaSeleccionada!!.rowIndex + vy
+            newCol = celdaSeleccionada!!.colIndex + vx
+        }
+        return moverCeldaSeleccionadaA(newRow, newCol)
     }
 
-    private fun setValorCelda(celda: Celda, valor: Int) {
-        if (celda.editable) if (game != null)
-            game!!.setValorCelda(celda, valor) else celda.value = valor
+    private fun moverCeldaSeleccionadaA(row: Int, col: Int): Boolean {
+        if (col >= 0 && col < Tablero.SUDOKU_SIZE && row >= 0 && row < Tablero.SUDOKU_SIZE) {
+            celdaSeleccionada = tablero!!.celdas[row][col]
+            onCeldaSeleccionada(celdaSeleccionada!!)
+            postInvalidate()
+            return true
+        }
+        return false
     }
 
-    // EVENTOS
-    protected open fun onCeldaSeleccionada(celda: Celda?) {
-        if (onCeldaSeleccionadaListener != null) celda?.let {
-            onCeldaSeleccionadaListener.onCellSelect(
-                it
-            )
+    private fun getCeldaSituadaEn(x: Int, y: Int): Celda? {
+        val lx = x - paddingLeft
+        val ly = y - paddingTop
+        val row = (ly / altoCelda).toInt()
+        val col = (lx / anchoCelda).toInt()
+        return if (col >= 0 && col < Tablero.SUDOKU_SIZE && row >= 0 && row < Tablero.SUDOKU_SIZE
+        ) {
+            tablero!!.celdas[row][col]
+        } else {
+            null
+        }
+    }
+
+    /**
+     *  ====================================================
+     *                      EVENTOS
+     *  ====================================================
+     */
+    protected open fun onCeldaSeleccionada(celda: Celda) {
+        if (onCeldaSeleccionadaListener != null) celda.let {
+            onCeldaSeleccionadaListener!!.onCellSelect(celda)
         }
     }
 
@@ -135,6 +207,7 @@ open class TableroSudokuView : View {
         onTocarCeldaListener?.onCellTapped(celda!!)
     }
 
+    // OVERRIDES - ESTADO
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthMode = MeasureSpec.getMode(widthMeasureSpec)
@@ -180,18 +253,6 @@ open class TableroSudokuView : View {
         notaArriba = altoCelda / 50.0f
         calcularAnchoLineaSector(ancho, alto)
     }
-
-    private fun calcularAnchoLineaSector(pxAncho: Int, pxAlto: Int) {
-        val pxSize = if (pxAncho < pxAlto) pxAncho else pxAlto
-        val escala = context.resources.displayMetrics.density
-        val size = pxSize / escala
-        var anchoLineaSectorEscala = 2.0f
-        if (size > 150) {
-            anchoLineaSectorEscala = 3.0f
-        }
-        anchoLineaSector = (anchoLineaSectorEscala * escala).toInt()
-    }
-
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -330,7 +391,7 @@ open class TableroSudokuView : View {
                 alto.toFloat(),
                 lineaSectorPaint
             )
-            c = c + 3
+            c += 3
         }
 
         var r = 0
@@ -343,10 +404,11 @@ open class TableroSudokuView : View {
                 y + anchoLineaSector2,
                 lineaSectorPaint
             )
-            r = r + 3
+            r += 3
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (!soloLectura) {
             val x = event.x.toInt()
@@ -359,7 +421,7 @@ open class TableroSudokuView : View {
                     invalidate()
                     if (celdaSeleccionada != null) {
                         onTocarCelda(celdaSeleccionada)
-                        onCeldaSeleccionada(celdaSeleccionada)
+                        onCeldaSeleccionada(celdaSeleccionada!!)
                     }
                     if (ocultarPulsados) {
                         celdaPulsada = null
@@ -383,9 +445,9 @@ open class TableroSudokuView : View {
                     // Limpiar el valor de la celda seleccionada
                     if (celdaSeleccionada != null) {
                         if (event.isShiftPressed || event.isAltPressed) {
-                            setNotaCelda(celdaSeleccionada!!, NotaCelda())
+                            SudokuController.setNotaCelda(celdaSeleccionada!!, NotaCelda())
                         } else {
-                            setValorCelda(celdaSeleccionada!!, 0)
+                            SudokuController.setValorCelda(celdaSeleccionada!!, 0)
                             moverCeldaSeleccionadaADerecha()
                         }
                     }
@@ -403,10 +465,10 @@ open class TableroSudokuView : View {
                 val cell = celdaSeleccionada!!
                 if (event.isShiftPressed || event.isAltPressed) {
                     // Añadir o eliminar numeros en las notas de las celdas
-                    setNotaCelda(cell, cell.nota.anotarNumero(numSel))
+                    SudokuController.setNotaCelda(cell, cell.nota.anotarNumero(numSel))
                 } else {
                     // Introducir un numero en una celda
-                    setValorCelda(cell, numSel)
+                    SudokuController.setValorCelda(cell, numSel)
                     this.moverCeldaSeleccionadaADerecha()
                 }
                 return true
@@ -415,48 +477,4 @@ open class TableroSudokuView : View {
         return false
     }
 
-    private fun moverCeldaSeleccionadaADerecha() {
-        if (!moverCeldaSeleccionada(1, 0)) {
-            var selRow = celdaSeleccionada!!.rowIndex
-            selRow++
-            if (!moverCeldaSeleccionadaA(selRow, 0)) {
-                moverCeldaSeleccionadaA(0, 0)
-            }
-        }
-        postInvalidate()
-    }
-
-
-    private fun moverCeldaSeleccionada(vx: Int, vy: Int): Boolean {
-        var newRow = 0
-        var newCol = 0
-        if (celdaSeleccionada != null) {
-            newRow = celdaSeleccionada!!.rowIndex + vy
-            newCol = celdaSeleccionada!!.colIndex + vx
-        }
-        return moverCeldaSeleccionadaA(newRow, newCol)
-    }
-
-    private fun moverCeldaSeleccionadaA(row: Int, col: Int): Boolean {
-        if (col >= 0 && col < Tablero.SUDOKU_SIZE && row >= 0 && row < Tablero.SUDOKU_SIZE) {
-            celdaSeleccionada = tablero!!.celdas[row][col]
-            onCeldaSeleccionada(celdaSeleccionada)
-            postInvalidate()
-            return true
-        }
-        return false
-    }
-
-    private fun getCeldaSituadaEn(x: Int, y: Int): Celda? {
-        val lx = x - paddingLeft
-        val ly = y - paddingTop
-        val row = (ly / altoCelda).toInt()
-        val col = (lx / anchoCelda).toInt()
-        return if (col >= 0 && col < Tablero.SUDOKU_SIZE && row >= 0 && row < Tablero.SUDOKU_SIZE
-        ) {
-            tablero!!.celdas[row][col]
-        } else {
-            null
-        }
-    }
 }
