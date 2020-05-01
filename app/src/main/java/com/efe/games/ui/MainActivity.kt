@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
 import com.efe.games.controller.UserController
 import com.efe.games.ui.sudoku.SudokuActivity
+import com.efe.games.ui.tictactoe.TicTacToeActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,10 +27,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Alba
-//        val btn2: Button = findViewById(R.id.buttonEnlaceAlba)
-//        btn2.setOnClickListener {
-//            val intent = Intent(this, TikTakToeActivity::class.java)
-//            startActivity(intent)
-//        }
+        val btn2: Button = findViewById(R.id.buttonEnlaceAlba)
+        btn2.setOnClickListener {
+            val intent = Intent(this, TicTacToeActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
