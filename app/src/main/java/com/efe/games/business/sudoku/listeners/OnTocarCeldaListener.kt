@@ -1,4 +1,4 @@
-package com.efe.games.model.sudoku.listeners
+package com.efe.games.business.sudoku.listeners
 
 import com.efe.games.model.sudoku.Celda
 

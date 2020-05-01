@@ -2,7 +2,9 @@
     <string name="app_name">EFE-Games</string>
 
     <string name="numpad">Pad numérico</string>
-    <string name="numpad_abbr">Pad</string>
+    <string name="dialog">Popup pad</string>
+    <string name="numpad_abbr">Popup</string>
+    <string name="dialog_abbr">Pad</string>
     <string name="pad_numerico_1">1</string>
     <string name="pad_numerico_2">2</string>
     <string name="pad_numerico_3">3</string>
@@ -14,4 +16,6 @@
     <string name="pad_numerico_9">9</string>
     <string name="pad_numerico_clear">C</string>
     <string name="pad_numerico_cambiarnumeronota">CambiarNumeroNota</string>
+    <string name="ventana_teclado_dialog_borrar">Borrar</string>
+    <string name="ventana_teclado_dialog_cerrar">Ok</string>
 </resources>

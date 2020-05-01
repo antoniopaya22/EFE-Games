@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.efe.games.R
 import com.efe.games.controller.sudoku.SudokuController
 
+
 class SudokuActivity : Activity() {
 
 

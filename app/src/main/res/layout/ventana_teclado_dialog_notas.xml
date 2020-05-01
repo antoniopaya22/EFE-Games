@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:padding="4dp">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <TableRow
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ToggleButton
+                android:id="@+id/button_1"
+                android:textOn="@string/pad_numerico_1"
+                android:textOff="@string/pad_numerico_1"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_2"
+                android:textOn="@string/pad_numerico_2"
+                android:textOff="@string/pad_numerico_2"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_3"
+                android:textOn="@string/pad_numerico_3"
+                android:textOff="@string/pad_numerico_3"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ToggleButton
+                android:id="@+id/button_4"
+                android:textOn="@string/pad_numerico_4"
+                android:textOff="@string/pad_numerico_4"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_5"
+                android:textOn="@string/pad_numerico_5"
+                android:textOff="@string/pad_numerico_5"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_6"
+                android:textOn="@string/pad_numerico_6"
+                android:textOff="@string/pad_numerico_6"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ToggleButton
+                android:id="@+id/button_7"
+                android:textOn="@string/pad_numerico_7"
+                android:textOff="@string/pad_numerico_7"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_8"
+                android:textOn="@string/pad_numerico_8"
+                android:textOff="@string/pad_numerico_8"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+            <ToggleButton
+                android:id="@+id/button_9"
+                android:textOn="@string/pad_numerico_9"
+                android:textOff="@string/pad_numerico_9"
+                android:layout_width="95dp"
+                android:layout_height="70dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_clear"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:text="@string/ventana_teclado_dialog_borrar" />
+
+            <Button
+                android:id="@+id/button_close"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="fill_parent"
+                android:layout_height="70dp"
+                android:layout_span="2"
+                android:text="@string/ventana_teclado_dialog_cerrar" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
