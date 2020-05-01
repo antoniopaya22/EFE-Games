@@ -13,6 +13,14 @@
         <item name="backgroundColorReadOnly">#616161</item>
     </style>
 
+    <style name="AppThemeTicTacToeConfiguracion" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundColor">#E2E2E2</item>
+        <item name="backgroundColorReadOnly">#616161</item>
+    </style>
+
     <style name="AppThemePrincipal" parent="AppTheme.NoActionBar">
         <item name="lineColor">#757575</item>
         <item name="sectorLineColor">#9e9e9e</item>
