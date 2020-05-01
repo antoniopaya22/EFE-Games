@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.efe.games.ui.tictactoe.MyCanvasView
+    <com.efe.games.ui.tictactoe.TicTacToeView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#2E2E2E"
