@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +19,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_1" />
+            android:text="@string/pad_numerico_1"
+            android:textSize="22sp" />
 
         <Button
             android:id="@+id/button_2"
@@ -27,7 +28,9 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_2" />
+            android:text="@string/pad_numerico_2"
+            android:textSize="22sp"
+            />
 
         <Button
             android:id="@+id/button_3"
@@ -35,7 +38,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_3" />
+            android:text="@string/pad_numerico_3"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_4"
@@ -43,7 +47,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_4" />
+            android:text="@string/pad_numerico_4"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_5"
@@ -51,7 +56,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_5" />
+            android:text="@string/pad_numerico_5"
+            android:textSize="22sp"/>
 
         <ImageButton
             android:id="@+id/cambiar_num_nota"
@@ -74,7 +80,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_6" />
+            android:text="@string/pad_numerico_6"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_7"
@@ -82,7 +89,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_7" />
+            android:text="@string/pad_numerico_7"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_8"
@@ -90,7 +98,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_8" />
+            android:text="@string/pad_numerico_8"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_9"
@@ -98,7 +107,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:text="@string/pad_numerico_9" />
+            android:text="@string/pad_numerico_9"
+            android:textSize="22sp"/>
 
         <Button
             android:id="@+id/button_clear"
@@ -106,6 +116,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
+            android:textSize="22sp"
             android:text="@string/pad_numerico_clear" />
 
         <Button

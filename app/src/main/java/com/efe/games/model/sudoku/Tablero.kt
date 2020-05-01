@@ -1,67 +1,75 @@
 package com.efe.games.model.sudoku
 
-import com.efe.games.model.sudoku.listeners.OnChangeListener
+import com.efe.games.business.sudoku.listeners.OnChangeListener
 
-
+/**
+ * Tablero de un sudoku
+ *
+ * Esta compuesto por:
+ *  - Una matriz de celdas
+ *  - Lista de sectores
+ *  - Lista de filas
+ *  - Lista de columnas
+ */
 class Tablero(
     var celdas: Array<Array<Celda>>,
-    var sectores: Array<GrupoCeldas>,
-    var filas: Array<GrupoCeldas>,
-    var columnas: Array<GrupoCeldas>,
-    val size: Int
+    private var sectores: Array<GrupoCeldas>,
+    private var filas: Array<GrupoCeldas>,
+    private var columnas: Array<GrupoCeldas>
 ) {
 
-    var onChangeListeners: MutableList<OnChangeListener> = mutableListOf()
+    /**
+     *  ====================================================
+     *                      PROPIEDADES
+     *  ====================================================
+     */
+    private var onChangeEnabled = true
+    private var onChangeListeners: MutableList<OnChangeListener> = mutableListOf()
+
+    /**
+     *  ====================================================
+     *                      STATIC
+     *  ====================================================
+     */
 
     companion object {
         const val SUDOKU_SIZE = 9
 
-        fun crearTableroVacio(): Tablero {
-            var filas = Array(9) { GrupoCeldas() }
-            var columnas = Array(9) { GrupoCeldas() }
-            var sectores = Array(9) { GrupoCeldas() }
-            var celdas = Array(9) { i ->
-                Array(9) { j ->
-                    Celda(
-                        i, j, 0, true, true,
-                        NotaCelda(), filas[j], columnas[i], sectores[((j / 3) * 3) + (i / 3)]
-                    )
-                }
-            }
-            return Tablero(celdas, sectores, filas, columnas, 9)
-        }
-
         fun crearTableroFromArray(tablero: Array<Array<Int>>): Tablero {
-            var filas = Array(9) { GrupoCeldas() }
-            var columnas = Array(9) { GrupoCeldas() }
-            var sectores = Array(9) { GrupoCeldas() }
-            var celdas = Array(9) { i ->
-                Array(9) { j ->
-                    Celda(
-                        i, j, tablero[i][j], tablero[i][j] == 0, true,
-                        NotaCelda(), filas[j], columnas[i], sectores[((j / 3) * 3) + (i / 3)]
-                    )
-                }
+            val filas = Array(9) { GrupoCeldas() }
+            val columnas = Array(9) { GrupoCeldas() }
+            val sectores = Array(9) { GrupoCeldas() }
+            val celdas: Array<Array<Celda>> = Array(9) { i -> Array(9) { j ->
+                Celda(
+                    i, j, tablero[i][j], tablero[i][j] == 0, true,
+                    NotaCelda(), filas[j], columnas[i], sectores[((j / 3) * 3) + (i / 3)]
+                )
+            } }
+            for (i in 0..8) for (j in 0..8) {
+                filas[j].addCelda(celdas[i][j])
+                columnas[i].addCelda(celdas[i][j])
+                sectores[((j / 3) * 3) + (i / 3)].addCelda(celdas[i][j])
             }
-            return Tablero(celdas, sectores, filas, columnas, 9)
+            return Tablero(celdas, sectores, filas, columnas)
         }
     }
 
-    fun setTodasCeldasEditables(): Unit = celdas.forEachIndexed { i, x ->
-        x.forEachIndexed { j, y -> celdas[i][j].editable = true }
-    }
-
-    fun setTodasCeldasInvalid(): Unit = celdas.forEachIndexed { i, x ->
-        x.forEachIndexed { j, y -> celdas[i][j].isValido = false }
-    }
-
-    fun isEmpty(): Boolean {
-        for (i in 0..9) for (j in 0..9) if (celdas[i][j].value == 0) return false
-        return true
+    /**
+     *  ====================================================
+     *                      FUNCIONES
+     *  ====================================================
+     */
+    private fun setTodasCeldasInvalid() {
+        onChangeEnabled = false
+        for (r in 0 until SUDOKU_SIZE) for (c in 0 until SUDOKU_SIZE) {
+            celdas[r][c].isValido = true
+        }
+        onChangeEnabled = true
+        onChange()
     }
 
     fun isCompleted(): Boolean {
-        for (i in 0..9) for (j in 0..9) {
+        for (i in 0..8) for (j in 0..8) {
             if (celdas[i][j].value == 0 || !celdas[i][j].isValido)
                 return false
         }
@@ -85,29 +93,33 @@ class Tablero(
     }
 
     fun validar(): Boolean {
-        var valido: Boolean = true
+        var valido = true
         setTodasCeldasInvalid()
+        onChangeEnabled = false
         filas.forEach { x -> if (!x.valido()) valido = false }
         columnas.forEach { x -> if (!x.valido()) valido = false }
         sectores.forEach { x -> if (!x.valido()) valido = false }
+        onChangeEnabled = true
+        onChange()
         return valido
     }
 
-    // ================= LISTENERS ================
+    /**
+     *  ====================================================
+     *                      LISTENERS
+     *  ====================================================
+     */
 
     fun addOnChangeListener(listener: OnChangeListener) = synchronized(onChangeListeners)
     {
         onChangeListeners.add(listener)
     }
 
-    fun removeOnChangeListener(listener: OnChangeListener) = synchronized(onChangeListeners)
-    {
-        onChangeListeners.remove(listener)
-    }
-
-    fun onChange() {
-        synchronized(onChangeListeners) {
-            onChangeListeners.forEach { x -> x.onChange() }
+    private fun onChange() {
+        if(onChangeEnabled){
+            synchronized(onChangeListeners) {
+                onChangeListeners.forEach { x -> x.onChange() }
+            }
         }
     }
 }

@@ -1,51 +1,65 @@
-package com.efe.games.business.sudoku.escritura
+package com.efe.games.ui.sudoku.escritura
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.PorterDuff
+import android.graphics.Color
+import android.graphics.LightingColorFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import com.efe.games.R
+import com.efe.games.business.sudoku.SudokuManager
+import com.efe.games.business.sudoku.listeners.OnChangeListener
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.NotaCelda
-import com.efe.games.model.sudoku.SudokuGame
 import com.efe.games.model.sudoku.Tablero
-import com.efe.games.model.sudoku.listeners.OnChangeListener
 import com.efe.games.ui.sudoku.TableroSudokuView
 import com.efe.games.ui.sudoku.TecladoView
 
-
+/**
+ * Vista que tiene todos los numeros debajo del tablero
+ * (Pad)
+ */
 class PadNumerico: MetodoEscritura() {
 
+    /**
+     *  ====================================================
+     *                      PROPIEDADES
+     *  ====================================================
+     */
     override val nameResID: Int
         get() = R.string.numpad
     override val abbrName: String?
         get() = context!!.getString(R.string.numpad_abbr)
 
-    private val MODE_EDIT_VALUE = 0
-    private val MODE_EDIT_NOTE = 1
-
-    //Atributos
     private var moveCeldaSeleccionadaOnPress = true
-    private var colorearValoresCompletados = true
-    private var mostrarTotalNumeros = false
     private var celdaSeleccionada: Celda? = null
     private var cambiarDeNumerosANotasButton: ImageButton? = null
     private var botonesNumeros: MutableMap<Int, Button>? = null
-    private var modoEditar = MODE_EDIT_VALUE
+    private var modoEditar = modeEditValue
 
-    //Metodos
+    /**
+     *  ====================================================
+     *                      INIT
+     *  ====================================================
+     */
     override fun inicializar(
         context: Context?,
         tecladoView: TecladoView?,
-        game: SudokuGame?,
         tablero: TableroSudokuView?
     ) {
-        super.inicializar(context, tecladoView, game, tablero)
-        game!!.tablero.addOnChangeListener(onCeldasChangeListener)
+        super.inicializar(context, tecladoView, tablero)
+        SudokuManager.addTableroListener(onCeldasChangeListener)
     }
 
+    /**
+     *  ====================================================
+     *                      FUNCIONES
+     *  ====================================================
+     */
+
+    @SuppressLint("InflateParams")
     override fun createTecladoView(): View? {
         val inflater =
             context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -69,12 +83,40 @@ class PadNumerico: MetodoEscritura() {
         cambiarDeNumerosANotasButton =
             teclado.findViewById(R.id.cambiar_num_nota)
         cambiarDeNumerosANotasButton!!.setOnClickListener {
-            modoEditar = if (modoEditar == MODE_EDIT_VALUE) MODE_EDIT_NOTE else MODE_EDIT_VALUE
+            modoEditar = if (modoEditar == modeEditValue) modeEditNote else modeEditValue
             update()
         }
+        update()
         return teclado
     }
 
+    private fun changeButtonIcon() {
+        when (modoEditar) {
+            modeEditNote -> cambiarDeNumerosANotasButton!!.setImageResource(R.drawable.ic_edit_value)
+            modeEditValue -> cambiarDeNumerosANotasButton!!.setImageResource(R.drawable.ic_edit_note)
+        }
+    }
+
+    private fun update() {
+        changeButtonIcon()
+        val valoresUsados: Map<Int, Int>? = SudokuManager.getValoresUsados()
+        for ((key, value) in valoresUsados!!) {
+            val colorearValor = value >= Tablero.SUDOKU_SIZE
+            val b: Button? = botonesNumeros!![key]
+            if (colorearValor){
+                b!!.background.colorFilter =
+                    LightingColorFilter(Color.parseColor("#00695c"), 0)
+            }
+            else
+                b!!.background.colorFilter = null
+        }
+    }
+
+    /**
+     *  ====================================================
+     *                      LISTENERS
+     *  ====================================================
+     */
     override fun onActivated() {
         update()
         celdaSeleccionada = tableroView!!.celdaSeleccionada
@@ -89,16 +131,14 @@ class PadNumerico: MetodoEscritura() {
         val celSel = celdaSeleccionada
         if (celSel != null) {
             when (modoEditar) {
-                MODE_EDIT_NOTE -> if (numeroSeleccionado == 0) {
-                    game!!.setNotaCelda(celSel, NotaCelda())
+                modeEditNote -> if (numeroSeleccionado == 0) {
+                    SudokuManager.setNotaCelda(celSel, NotaCelda())
                 } else if (numeroSeleccionado in 1..9) {
-                    game!!.setNotaCelda(celSel, celSel.nota.anotarNumero(numeroSeleccionado))
+                    SudokuManager.setNotaCelda(celSel, celSel.nota.anotarNumero(numeroSeleccionado))
                 }
-                MODE_EDIT_VALUE -> if (numeroSeleccionado in 0..9) {
-                    game!!.setValorCelda(celSel, numeroSeleccionado)
-                    if (moveCeldaSeleccionadaOnPress) {
-                        tableroView!!.moverCeldaSeleccionadaADerecha()
-                    }
+                modeEditValue -> if (numeroSeleccionado in 0..9) {
+                    SudokuManager.setValorCelda(celSel, numeroSeleccionado)
+                    if (moveCeldaSeleccionadaOnPress) tableroView!!.moverCeldaSeleccionadaADerecha()
                 }
             }
         }
@@ -112,31 +152,4 @@ class PadNumerico: MetodoEscritura() {
         }
     }
 
-
-    private fun update() {
-        when (modoEditar) {
-            MODE_EDIT_NOTE -> cambiarDeNumerosANotasButton!!.setImageResource(R.drawable.ic_edit_white)
-            MODE_EDIT_VALUE -> cambiarDeNumerosANotasButton!!.setImageResource(R.drawable.ic_edit_grey)
-        }
-        var valoresUsados: Map<Int, Int>? = null
-        if (colorearValoresCompletados || mostrarTotalNumeros) valoresUsados =
-            game!!.tablero.getValoresUsados()
-        if (colorearValoresCompletados) {
-            for ((key, value) in valoresUsados!!) {
-                val colorearValor = value >= Tablero.SUDOKU_SIZE
-                val b: Button? = botonesNumeros!![key]
-                if (colorearValor) {
-                    b!!.getBackground().setColorFilter(-0xe4a1e0, PorterDuff.Mode.MULTIPLY)
-                } else {
-                    b!!.getBackground().colorFilter = null
-                }
-            }
-        }
-        if (mostrarTotalNumeros) {
-            for ((key, value) in valoresUsados!!) {
-                val b: Button? = botonesNumeros!![key]
-                b!!.text = "$key ($value)"
-            }
-        }
-    }
 }
