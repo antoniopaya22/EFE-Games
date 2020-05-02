@@ -40,7 +40,7 @@ class TicTacToeActivity : AppCompatActivity() {
 
     fun onMove(cell:ImageButton, move:Int){
         //if valid move
-        cell.setImageResource(R.drawable.ic_cross)
+
         println(move)
 
         var moveAI:Int = -1
@@ -50,10 +50,13 @@ class TicTacToeActivity : AppCompatActivity() {
             println("FROM ACITVITY ==============================")
             println(moveAI)
 
+        if(moveAI >= 0){
+            cell.setImageResource(R.drawable.ic_cross)
+            val id = resources.getIdentifier("board$moveAI", "id", packageName)
+            var btn: ImageButton = findViewById(id) as ImageButton
+            btn.setImageResource(R.drawable.ic_circle)
+        }
 
-        val id = resources.getIdentifier("board$moveAI", "id", packageName)
-        var btn: ImageButton = findViewById(id) as ImageButton
-        btn.setImageResource(R.drawable.ic_circle)
 /*
         doAsync() {
             moveAI = TicTacToeController.makeMoveUser(move)

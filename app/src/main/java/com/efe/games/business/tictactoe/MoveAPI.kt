@@ -1,7 +1,9 @@
-package com.efe.games.model.tictactoe
+package com.efe.games.business.tictactoe
 
 //import khttp.get
 
+import com.efe.games.model.tictactoe.ECodesTicTacToe
+import com.efe.games.model.tictactoe.MoveRecommendation
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -13,7 +15,7 @@ class MoveAPI(
 
 ){
 
-    fun getNextMove(state:String, player:ECodesTicTacToe):Int {
+    fun getNextMove(state:String, player: ECodesTicTacToe):Int {
         var playerStr = "X"
         if(player == ECodesTicTacToe.P1_CODE) playerStr = "O"
 
@@ -59,8 +61,9 @@ class MoveAPI(
 
         val client = OkHttpClient()
         var recommendation:Int = 0
-        var rec: MoveRecommendation = MoveRecommendation()
-        var moveAPI:MoveAPI = this
+        var rec: MoveRecommendation =
+            MoveRecommendation()
+        var moveAPI: MoveAPI = this
         /*
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
