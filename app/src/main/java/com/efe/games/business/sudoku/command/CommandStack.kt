@@ -1,17 +1,13 @@
-package com.efe.games.model.sudoku.command
+package com.efe.games.business.sudoku.command
 
-import com.efe.games.model.sudoku.Tablero
+import com.efe.games.business.sudoku.SudokuManager
 import java.util.*
 
 
-class CommandStack(private val tablero: Tablero) {
-    private val commandStack = Stack<AbstractCommand>()
+class CommandStack {
+    private val commandStack = Stack<EFECommand>()
 
-    fun empty(): Boolean {
-        return commandStack.empty()
-    }
-
-    fun execute(command: AbstractCommand) {
+    fun execute(command: EFECommand) {
         push(command)
         command.execute()
     }
@@ -37,7 +33,7 @@ class CommandStack(private val tablero: Tablero) {
     }
 
     fun undoToCheckpoint() {
-        var c: AbstractCommand
+        var c: EFECommand
         while (!commandStack.empty()) {
             c = commandStack.pop()
             c.undo()
@@ -50,15 +46,10 @@ class CommandStack(private val tablero: Tablero) {
 
     fun hasSomethingToUndo(): Boolean = commandStack.size != 0
 
-    private fun push(command: AbstractCommand) {
-        if (command is AbstractCeldaCommand) {
-            command.setCells(tablero)
-        }
-        commandStack.push(command)
-    }
+    private fun push(command: EFECommand) = commandStack.push(command)
 
-    private fun pop(): AbstractCommand = commandStack.pop()
+    private fun pop(): EFECommand = commandStack.pop()
 
-    private fun validarCeldas() = tablero.validar()
+    private fun validarCeldas() = SudokuManager.validarTablero()
 
 }

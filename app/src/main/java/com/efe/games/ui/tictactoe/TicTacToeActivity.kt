@@ -1,13 +1,10 @@
 package com.efe.games.ui.tictactoe
 
-import android.R.attr.button
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
-import com.efe.games.controller.TicTacToeController
+import com.efe.games.controller.tictactoe.TicTacToeController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

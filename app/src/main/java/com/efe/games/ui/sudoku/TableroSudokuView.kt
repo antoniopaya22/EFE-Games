@@ -10,14 +10,14 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import com.efe.games.R
+import com.efe.games.business.sudoku.listeners.OnCeldaSeleccionadaListener
+import com.efe.games.business.sudoku.listeners.OnChangeListener
+import com.efe.games.business.sudoku.listeners.OnTocarCeldaListener
 import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.NotaCelda
 import com.efe.games.model.sudoku.SudokuGame
 import com.efe.games.model.sudoku.Tablero
-import com.efe.games.model.sudoku.listeners.OnCeldaSeleccionadaListener
-import com.efe.games.model.sudoku.listeners.OnChangeListener
-import com.efe.games.model.sudoku.listeners.OnTocarCeldaListener
 import kotlin.math.roundToInt
 
 /**
@@ -56,10 +56,10 @@ open class TableroSudokuView : View {
     private var notaArriba = 0f
     private var anchoLineaSector = 0
 
-    var soloLectura = false
-    var colorearErroneos = true
-    var colorearPulsados = true
-    var ocultarPulsados = true
+    private var soloLectura = false
+    private var colorearErroneos = true
+    private var colorearPulsados = true
+    private var ocultarPulsados = true
 
     // Listeners
     var onTocarCeldaListener: OnTocarCeldaListener? = null
@@ -126,7 +126,8 @@ open class TableroSudokuView : View {
         backgroundColorSeleccionado.color = a.getColor(R.styleable.TableroSudokuView_backgroundColorSelected, Color.YELLOW)
         backgroundColorPulsado.color =
             a.getColor(R.styleable.TableroSudokuView_backgroundColorTouched, Color.rgb(50, 50, 255))
-
+        backgroundColorPulsado.alpha = 100
+        backgroundColorSeleccionado.alpha = 100
         a.recycle()
     }
 
@@ -190,6 +191,11 @@ open class TableroSudokuView : View {
         } else {
             null
         }
+    }
+
+    fun ocultarCeldaTocada() {
+        celdaPulsada = null
+        postInvalidate()
     }
 
     /**
@@ -331,47 +337,36 @@ open class TableroSudokuView : View {
                 celdaLeft =
                     ((celdaSeleccionada!!.colIndex * anchoCelda).roundToInt() + paddingLeft)
                 celdaTop = (celdaSeleccionada!!.rowIndex * altoCelda).roundToInt() + paddingTop
-                canvas.run {
-                    drawRect(
-                                celdaLeft.toFloat(),
-                                celdaTop.toFloat(),
-                                celdaLeft + anchoCelda,
-                                celdaTop + altoCelda,
-                                backgroundColorSeleccionado
-                            )
-                }
+                canvas.drawRect(
+                        celdaLeft.toFloat(),
+                        celdaTop.toFloat(),
+                        celdaLeft + anchoCelda,
+                        celdaTop + altoCelda,
+                        backgroundColorSeleccionado
+                    )
             }
             // Resaltar visualmente la célula debajo del dedo
             if (colorearPulsados && celdaPulsada != null) {
                 celdaLeft =
                     (this.celdaPulsada!!.colIndex * anchoCelda).roundToInt() + paddingLeft
-                celdaTop = (this.celdaPulsada!!.rowIndex * altoCelda).roundToInt() + paddingTop
-                canvas.run {
-                    drawRect(
-                                celdaLeft.toFloat(),
-                                paddingTop.toFloat(),
-                                celdaLeft + anchoCelda,
-                                alto.toFloat(),
-                                backgroundColorPulsado
-                            )
-                    drawRect(
-                                paddingLeft.toFloat(),
-                                celdaTop.toFloat(),
-                                ancho.toFloat(),
-                                celdaTop + altoCelda,
-                                backgroundColorPulsado
-                            )
-                }
+                celdaTop =
+                    (this.celdaPulsada!!.rowIndex * altoCelda).roundToInt() + paddingTop
+                canvas.drawRect(
+                    celdaLeft.toFloat(), paddingTop.toFloat(), celdaLeft + anchoCelda,
+                    alto.toFloat(), backgroundColorPulsado)
+                canvas.drawRect(paddingLeft.toFloat(),
+                    celdaTop.toFloat(),
+                    ancho.toFloat(), celdaTop + altoCelda, backgroundColorPulsado)
             }
         }
 
         // Dibujar lineas verticales
-        for (c in 0..9) {
+        for (c in 0..8) {
             val x = c * anchoCelda + paddingLeft
             canvas.drawLine(x, paddingTop.toFloat(), x, alto.toFloat(), lineaPaint)
         }
         // Dibujar lineas horizontales
-        for (r in 0..9) {
+        for (r in 0..8) {
             val y = r * altoCelda + paddingTop
             canvas.drawLine(paddingLeft.toFloat(), y, ancho.toFloat(), y, lineaPaint)
         }

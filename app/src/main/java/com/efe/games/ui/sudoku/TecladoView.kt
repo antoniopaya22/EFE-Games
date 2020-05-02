@@ -4,15 +4,17 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import com.efe.games.R
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.SudokuGame
-import com.efe.games.business.sudoku.escritura.MetodoEscritura
-import com.efe.games.business.sudoku.escritura.PadNumerico
-import com.efe.games.model.sudoku.listeners.OnCeldaSeleccionadaListener
-import com.efe.games.model.sudoku.listeners.OnTocarCeldaListener
+import com.efe.games.ui.sudoku.escritura.MetodoEscritura
+import com.efe.games.ui.sudoku.escritura.PadNumerico
+import com.efe.games.business.sudoku.listeners.OnCeldaSeleccionadaListener
+import com.efe.games.business.sudoku.listeners.OnTocarCeldaListener
+import com.efe.games.ui.sudoku.escritura.VentanaTeclado
 
 
 class TecladoView : LinearLayout {
@@ -36,11 +38,11 @@ class TecladoView : LinearLayout {
 
     private fun crearMetodosEscritura() {
         addMetodoEscritura(PadNumerico())
-//        addMetodoEscritura(VentanaTeclado())
+        addMetodoEscritura(VentanaTeclado())
     }
 
     private fun addMetodoEscritura(im: MetodoEscritura) {
-        im.inicializar(context, this, game, tablero)
+        im.inicializar(context, this, tablero)
         metodosEscritura.add(im)
     }
 
@@ -86,38 +88,28 @@ class TecladoView : LinearLayout {
         }
     }
 
-    /**
-     * Garantiza la creación del panel de control para el método de entrada dado.
-     *
-     * @param id
-     */
     private fun asegurarControlPanel(id: Int) {
         val im: MetodoEscritura = metodosEscritura[id]
         if (!im.isMetodoEscrituraViewCreated) {
-            val tecladoView: View = im.metodoEscrituraView!!
+            val tecladoView: View = im.metodoEscrituraView
             val cambiarModo: Button = tecladoView.findViewById(R.id.cambiarModo)
             cambiarModo.setOnClickListener(cambiarModoListener)
-            this.addView(tecladoView)
+            this.addView(tecladoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         }
     }
 
     private val mOnCellTapListener: OnTocarCeldaListener = object : OnTocarCeldaListener {
         override fun onCellTapped(celda: Celda) {
-            fun onCellTapped(celda: Celda?) {
-                if (metodoActivo !== -1 && metodosEscritura != null) {
+            if (metodoActivo != -1 && metodosEscritura != null) {
                     metodosEscritura[metodoActivo].onCellTapped(celda)
                 }
             }
-        }
     }
 
-    private val mOnCellSelected: OnCeldaSeleccionadaListener =
-        object : OnCeldaSeleccionadaListener {
+    private val mOnCellSelected: OnCeldaSeleccionadaListener = object : OnCeldaSeleccionadaListener {
             override fun onCellSelect(celda: Celda) {
-                fun onCellSelected(celda: Celda?) {
-                    if (metodoActivo !== -1 && metodosEscritura != null) {
-                        metodosEscritura[metodoActivo].onCellSelected(celda)
-                    }
+                if (metodoActivo != -1 && metodosEscritura != null) {
+                    metodosEscritura[metodoActivo].onCellSelected(celda)
                 }
             }
         }
@@ -125,8 +117,4 @@ class TecladoView : LinearLayout {
     private val cambiarModoListener =
         OnClickListener { activateNextMetodoEscritura() }
 
-    companion object {
-        const val INPUT_METHOD_POPUP = 0
-        const val INPUT_METHOD_NUMPAD = 1
-    }
 }

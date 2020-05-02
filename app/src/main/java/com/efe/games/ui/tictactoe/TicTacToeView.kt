@@ -10,7 +10,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.efe.games.R
 
-class MyCanvasView(context: Context, st: AttributeSet) : View(context, st) {
+class TicTacToeView(context: Context, st: AttributeSet) : View(context, st) {
 
     private val linePaint = Paint() // Line
     private lateinit var extraCanvas: Canvas
