@@ -6,44 +6,36 @@ import kotlinx.coroutines.*
 
 class TicTacToe(
     var board: TableroTicTacToe = TableroTicTacToe(),
-    var moveAPI: MoveAPI = MoveAPI()
+    var moveAPI: MoveAPI = MoveAPI(),
+    var recommendation: Int = -1
 ){
-    private val uiScope = CoroutineScope(Dispatchers.Main)
 
-    fun makeMoveUser(move:Int, player: ECodesTicTacToe):Boolean{
+    fun makeMoveUser(move:Int, player: ECodesTicTacToe):Int{
         if(this.board.celdas[move] == 0){
             this.board.makeMove(move, player)
-            return true
+            return move
         }
-        return false
+        return -1
     }
 
-    fun makeMoveAPI(player: ECodesTicTacToe): Int {
-        var result:Int = -1
-        uiScope.launch {
-            result = doInBack(player)
+    suspend fun makeMoveAPI(player: ECodesTicTacToe): Int {
+        var result = doInBack(player)
+        if(this.board.celdas[result] == 0){
+            this.board.makeMove(result, player)
+            return result
         }
-        println("FROM TICTACTOE ==================================================================")
-        println(result)
-        return result
-        //this.board.makeMove(move, player)
+        return -1
     }
 
     private suspend fun doInBack(player: ECodesTicTacToe) = withContext(Dispatchers.Default) {
-        var result = -1
         async {
-
-            withContext(Dispatchers.Main) {
-                result = moveAPI.getNextMove(board.getTableroState(), player)
-            }
-
-        result
+            var result = moveAPI.getNextMove(board.getTableroState(), player)
+            result
         }
     }.await()
 
-
-
-    fun getBoardState(): IntArray {
-        return this.board.celdas
+    fun restartGame() {
+        this.board = TableroTicTacToe()
     }
+
 }
