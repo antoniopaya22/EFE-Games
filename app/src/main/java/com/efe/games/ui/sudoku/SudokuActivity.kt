@@ -1,13 +1,16 @@
 package com.efe.games.ui.sudoku
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
 import com.efe.games.controller.sudoku.SudokuController
 
-class SudokuActivity : Activity() {
+class SudokuActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +33,26 @@ class SudokuActivity : Activity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
+            R.id.undo -> {
+                SudokuController.undo()
+                return true
+            }
             R.id.resolverSudoku -> {
-                SudokuController.resolverSudoku()
+                val builder: AlertDialog.Builder = this.let {
+                    AlertDialog.Builder(it)
+                }
+                builder.setMessage("Si resuelves el sudoku no obtendrás puntos")
+                    .setTitle("¿Quieres resolverlo?")
+                builder.apply {
+                    setPositiveButton("Ok") { dialog, id ->
+                        SudokuController.resolverSudoku()
+                    }
+                    setNegativeButton("Cancelar") { _, _ ->
+                        // User cancelled the dialog
+                    }
+                }
+                builder.create()
+                builder.show()
                 true
             }
             R.id.hayTiempo -> {

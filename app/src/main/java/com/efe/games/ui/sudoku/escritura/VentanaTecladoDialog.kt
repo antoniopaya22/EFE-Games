@@ -97,7 +97,7 @@ class VentanaTecladoDialog(context: Context) : Dialog(context) {
         numeroSeleccionado = num
         for ((key, b) in botonesNumeros) {
             if (key == numeroSeleccionado) {
-                b.setTextColor(Color.WHITE)
+                b.setTextColor(Color.BLACK)
                 b.background.colorFilter = LightingColorFilter(0x44FFFFFF, 0)
             } else {
                 b.setTextColor(Color.WHITE)
@@ -118,10 +118,6 @@ class VentanaTecladoDialog(context: Context) : Dialog(context) {
         }
     }
 
-    fun setContadorValores(num: Int, cont: Int) {
-        val str = "$num ($cont)"
-        botonesNumeros[num]!!.text = str
-    }
 
     /**
      *  ====================================================
