@@ -63,14 +63,16 @@ class TicTacToeActivity : AppCompatActivity() {
             }
         }else{
             if (status == ECodesTicTacToe.PLAYING_CODE) {
-                if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE) {
-                    cell.setImageResource(R.drawable.ic_cross)
-                }else{
-                    cell.setImageResource(R.drawable.ic_circle)
+                var move = TicTacToeController.makeMoveUser(move)
+                if (move >= 0) {
+                    if (TicTacToeController.getTurn() == ECodesTicTacToe.P2_CODE) {
+                        cell.setImageResource(R.drawable.ic_cross)
+                    } else {
+                        cell.setImageResource(R.drawable.ic_circle)
+                    }
+                    status = TicTacToeController.getGameStatus()
+                    setStatus(status)
                 }
-                TicTacToeController.makeMoveUser(move)
-                status = TicTacToeController.getGameStatus()
-                setStatus(status)
             }
         }
     }
