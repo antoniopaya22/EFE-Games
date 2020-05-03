@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.core.content.res.ResourcesCompat
 import com.efe.games.R
 import com.efe.games.business.sudoku.SudokuManager
 import com.efe.games.business.sudoku.listeners.OnChangeListener
@@ -105,7 +106,7 @@ class PadNumerico: MetodoEscritura() {
             val b: Button? = botonesNumeros!![key]
             if (colorearValor){
                 b!!.background.colorFilter =
-                    LightingColorFilter(Color.parseColor("#00695c"), 0)
+                    LightingColorFilter(ResourcesCompat.getColor(context!!.resources, R.color.colorGreen, null), 0)
             }
             else
                 b!!.background.colorFilter = null

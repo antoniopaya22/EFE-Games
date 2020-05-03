@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import android.widget.LinearLayout.LayoutParams
+import androidx.core.content.res.ResourcesCompat
 import com.efe.games.R
 import com.efe.games.business.sudoku.listeners.OnNotaEditadaListener
 import com.efe.games.business.sudoku.listeners.OnNumeroEditadoListener
@@ -84,7 +85,7 @@ class VentanaTecladoDialog(context: Context) : Dialog(context) {
 
     fun colorearNumero(number: Int) {
         botonesNumeros[number]!!.background.colorFilter =
-                LightingColorFilter(Color.parseColor("#00695c"), 0)
+                LightingColorFilter(ResourcesCompat.getColor(context!!.resources, R.color.colorGreen, null), 0)
     }
 
     fun resetButtons() {

@@ -358,6 +358,6 @@
     <path android:fillAlpha="1" android:fillColor="#1400bb"
         android:pathData="M557.262,-7.907h282.907v287.802h-282.907z"
         android:strokeAlpha="1" android:strokeColor="#ffffff" android:strokeWidth="2.4267118"/>
-    <path android:fillAlpha="1" android:fillColor="#ffffff"
+    <path android:fillAlpha="1" android:fillColor="#ff9988"
         android:pathData="m44.816,56.438 l28.603,-25.135 74.438,87.511 73.393,-87.511 28.369,24.191 -76.689,93.055 82.586,93.411 -31.132,29.104 -76.527,-92.027 -77.572,92.027 -29.881,-29.104 81.857,-93.411z" android:strokeColor="#00000000"/>
 </vector>
