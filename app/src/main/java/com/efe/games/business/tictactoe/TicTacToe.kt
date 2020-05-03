@@ -6,13 +6,12 @@ import kotlinx.coroutines.*
 
 class TicTacToe(
     var board: TableroTicTacToe = TableroTicTacToe(),
-    var moveAPI: MoveAPI = MoveAPI(),
-    var recommendation: Int = -1
+    var moveAPI: MoveAPI = MoveAPI()
 ){
 
-    fun makeMoveUser(move:Int, player: ECodesTicTacToe):Int{
+    fun makeMoveUser(move:Int):Int{
         if(this.board.celdas[move] == 0){
-            this.board.makeMove(move, player)
+            this.board.makeMove(move, this.board.playerTurn)
             return move
         }
         return -1
@@ -36,6 +35,10 @@ class TicTacToe(
 
     fun restartGame() {
         this.board = TableroTicTacToe()
+    }
+
+    fun getTurn(): ECodesTicTacToe {
+        return this.board.playerTurn
     }
 
 }

@@ -3,11 +3,14 @@ package com.efe.games.ui.tictactoe
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
+import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.controller.tictactoe.TicTacToeController
 import com.efe.games.model.tictactoe.ECodesTicTacToe
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +25,6 @@ class TicTacToeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //this.setTheme(R.style.Theme_Default)
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
         txtStatus.text = "Tu turno"
@@ -35,45 +37,68 @@ class TicTacToeActivity : AppCompatActivity() {
 
         val btRestart: Button = findViewById(R.id.btRestart)
         btRestart.setOnClickListener { onRestartGame() }
-        /*
-         val myCanvasView = MyCanvasView(this)
-        myCanvasView.systemUiVisibility = SYSTEM_UI_FLAG_FULLSCREEN
-        setContentView(myCanvasView)
-         */
     }
 
     fun onMove(cell:ImageButton, move:Int) {
         var status = TicTacToeController.getGameStatus()
-        if (status == ECodesTicTacToe.PLAYING_CODE) {
-            txtStatus.text = "Pensando..."
-            var moveAI: Int = -1
-            var move = TicTacToeController.makeMoveUser(move)
-            if (move >= 0) {
-                cell.setImageResource(R.drawable.ic_cross)
-                uiScope.launch {
-                    moveAI = TicTacToeController.makeMoveAI()
-                    if (moveAI >= 0) {
-                        val id = resources.getIdentifier("board$moveAI", "id", packageName)
-                        var btn: ImageButton = findViewById(id) as ImageButton
-                        btn.setImageResource(R.drawable.ic_circle)
+        if(!TicTacToeController.play1v1){
+            if (status == ECodesTicTacToe.PLAYING_CODE) {
+                txtStatus.text = "Pensando..."
+                var nextMove: Int = -1
+                var move = TicTacToeController.makeMoveUser(move)
+                if (move >= 0) {
+
+                    cell.setImageResource(R.drawable.ic_cross)
+                    uiScope.launch {
+                        nextMove = TicTacToeController.makeMoveAPI()
+                        if (nextMove >= 0) {
+                            val id = resources.getIdentifier("board$nextMove", "id", packageName)
+                            var btn: ImageButton = findViewById(id) as ImageButton
+                            btn.setImageResource(R.drawable.ic_circle)
+                        }
+                        status = TicTacToeController.getGameStatus()
+                        this@TicTacToeActivity.setStatus(status)
                     }
-                    status = TicTacToeController.getGameStatus()
-                    this@TicTacToeActivity.setStatus(status)
                 }
             }
-
-
+        }else{
+            if (status == ECodesTicTacToe.PLAYING_CODE) {
+                if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE) {
+                    cell.setImageResource(R.drawable.ic_cross)
+                }else{
+                    cell.setImageResource(R.drawable.ic_circle)
+                }
+                TicTacToeController.makeMoveUser(move)
+                status = TicTacToeController.getGameStatus()
+                setStatus(status)
+            }
         }
     }
     private fun setStatus(status: ECodesTicTacToe) {
-        if (status == ECodesTicTacToe.PLAYING_CODE) {
-            txtStatus.text = "Tu turno"
-        } else if (status == ECodesTicTacToe.P1_CODE) {
-            txtStatus.text = "Has ganado"
-        } else if (status == ECodesTicTacToe.P2_CODE) {
-            txtStatus.text = "Has perdido"
-        } else {
-            txtStatus.text = "Empate"
+        if(!TicTacToeController.play1v1) {
+            if (status == ECodesTicTacToe.PLAYING_CODE) {
+                txtStatus.text = "Tu turno"
+            } else if (status == ECodesTicTacToe.P1_CODE) {
+                txtStatus.text = "Has ganado"
+            } else if (status == ECodesTicTacToe.P2_CODE) {
+                txtStatus.text = "Has perdido"
+            } else {
+                txtStatus.text = "Empate"
+            }
+        }else{
+            if (status == ECodesTicTacToe.PLAYING_CODE) {
+                if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE){
+                    txtStatus.text = "Turno del jugador 1"
+                }else{
+                    txtStatus.text = "Turno del jugador 2"
+                }
+            } else if (status == ECodesTicTacToe.P1_CODE) {
+                txtStatus.text = "Gana el jugador 1"
+            } else if (status == ECodesTicTacToe.P2_CODE) {
+                txtStatus.text = "Gana el jugador 2"
+            } else {
+                txtStatus.text = "Empate"
+            }
         }
     }
 
@@ -84,6 +109,36 @@ class TicTacToeActivity : AppCompatActivity() {
             var btn: ImageButton = findViewById(id) as ImageButton
             btn.setImageResource(R.drawable.ic_clean)
         }
-        txtStatus.text = "Tu turno"
+        if(!TicTacToeController.play1v1) {
+            txtStatus.text = "Tu turno"
+        }else{
+            txtStatus.text = "Turno del jugador 1"
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.tictactoe_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.play1v1 -> {
+                TicTacToeController.changeMode()
+                onRestartGame()
+                true
+            }
+            R.id.hayTiempo -> {
+                /*
+                SudokuController.hayTiempo()
+                item.isChecked = !item.isChecked
+
+                 */
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
