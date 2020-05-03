@@ -3,6 +3,7 @@ package com.efe.games.business.sudoku
 import com.efe.games.business.sudoku.command.*
 import com.efe.games.business.sudoku.listeners.OnChangeListener
 import com.efe.games.business.sudoku.listeners.OnSudokuResueltoListener
+import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.NotaCelda
 import com.efe.games.model.sudoku.SudokuGame
@@ -72,10 +73,6 @@ object SudokuManager {
 
     fun validarTablero() = game.validar()
 
-    fun limpiarNotas() = executeCommand(LimpiarNotasCommand())
-
-    fun fillNotas() = executeCommand(FillNotasCommand())
-
     /**
      *  ====================================================
      *                      LISTENERS
@@ -88,7 +85,7 @@ object SudokuManager {
 
     private val onSolvedListener: OnSudokuResueltoListener = object : OnSudokuResueltoListener {
         override fun onSudokuResuelto() {
-            println("Resuelto")
+            SudokuController.onSudokuResuelto()
         }
     }
 
@@ -104,11 +101,4 @@ object SudokuManager {
         commandStack.undo()
     }
 
-    fun hasSomethingToUndo(): Boolean = commandStack.hasSomethingToUndo()
-
-    fun setUndoCheckpoint() = commandStack.setCheckpoint()
-
-    fun undoToCheckpoint() = commandStack.undoToCheckpoint()
-
-    fun hasUndoCheckpoint(): Boolean = commandStack.hasCheckpoint()
 }

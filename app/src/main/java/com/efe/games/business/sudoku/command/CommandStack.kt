@@ -20,31 +20,6 @@ class CommandStack {
         }
     }
 
-    fun setCheckpoint() {
-        if (!commandStack.empty()) {
-            val c = commandStack.peek()
-            c.isCheckpoint = true
-        }
-    }
-
-    fun hasCheckpoint(): Boolean {
-        for (c in commandStack) if (c.isCheckpoint) return true
-        return false
-    }
-
-    fun undoToCheckpoint() {
-        var c: EFECommand
-        while (!commandStack.empty()) {
-            c = commandStack.pop()
-            c.undo()
-            if (commandStack.empty() || commandStack.peek().isCheckpoint) {
-                break
-            }
-        }
-        validarCeldas()
-    }
-
-    fun hasSomethingToUndo(): Boolean = commandStack.size != 0
 
     private fun push(command: EFECommand) = commandStack.push(command)
 

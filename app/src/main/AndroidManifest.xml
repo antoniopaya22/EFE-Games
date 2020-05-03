@@ -15,8 +15,9 @@
         <activity
             android:name=".ui.sudoku.SudokuActivity"
             android:theme="@style/AppThemeSudokuConfiguracion" />
-        <activity android:name=".ui.tictactoe.TicTacToeActivity"
-            android:theme="@style/AppThemeTicTacToeConfiguracion"></activity>
+        <activity
+            android:name=".ui.tictactoe.TicTacToeActivity"
+            android:theme="@style/AppThemeTicTacToeConfiguracion" />
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AppThemePrincipal">

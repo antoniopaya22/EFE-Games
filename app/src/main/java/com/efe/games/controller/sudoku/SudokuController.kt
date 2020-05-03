@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import com.efe.games.business.sudoku.GeneradorSudoku
 import com.efe.games.business.sudoku.ResuelveSudoku
 import com.efe.games.business.sudoku.SudokuManager
+import com.efe.games.business.sudoku.listeners.OnSudokuResueltoListener
 import com.efe.games.model.sudoku.Celda
 import com.efe.games.model.sudoku.NotaCelda
 import com.efe.games.model.sudoku.SudokuGame
@@ -19,6 +20,7 @@ object SudokuController {
     private lateinit var tableroSudokuView: TableroSudokuView
     private lateinit var tecladoView: TecladoView
     private lateinit var timer: CountDownTimer
+    private lateinit var onSudokuResueltoListener: OnSudokuResueltoListener
     private var tiempoParaResolver: Long = 0
     private const val padNumerico: Int = 0
     private var isRunning: Boolean = false
@@ -49,6 +51,7 @@ object SudokuController {
         SudokuManager.game = SudokuGame.crearSudokuConTablero(tableroResuelto)
         SudokuManager.game.estado = SudokuGame.GAME_STATE_COMPLETED
         tableroSudokuView.game = SudokuManager.game
+        this.onPause()
     }
 
     fun setNotaCelda(celda: Celda, nota: NotaCelda) = SudokuManager.setNotaCelda(celda, nota)
@@ -70,6 +73,14 @@ object SudokuController {
             1 -> 5
             else -> 40
         }
+
+    fun onSudokuResuelto() {
+        TODO()
+    }
+
+    fun undo() {
+        SudokuManager.undo()
+    }
 
 
     // TIEMPO
