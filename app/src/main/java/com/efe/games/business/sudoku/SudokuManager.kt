@@ -18,17 +18,29 @@ object SudokuManager {
      *                      PROPIEDADES
      *  ====================================================
      */
-    var game: SudokuGame? = null
+    var game: SudokuGame = SudokuGame()
         set(value) {
-            value!!.tablero.validar()
+            value.tablero.validar()
             commandStack = CommandStack()
             field = value
         }
-    var dificultad: Int = 0
-    var originalSudoku : Array<Array<Int>>? = null
-    var onSudokuResueltoListener: OnSudokuResueltoListener? = null
+    private var dificultad: Int = 0
 
-    private var commandStack: CommandStack? = null // Command
+    lateinit var originalSudoku : Array<Array<Int>>
+    private lateinit var onSudokuResueltoListener: OnSudokuResueltoListener
+    private lateinit var commandStack: CommandStack
+
+    /**
+     *  ====================================================
+     *                         INIT
+     *  ====================================================
+     */
+    fun nuevaPartida(game: SudokuGame, dificultad: Int) {
+        this.game = game
+        this.dificultad = dificultad
+        this.onSudokuResueltoListener = this.onSolvedListener
+        this.game.start()
+    }
 
     /**
      *  ====================================================
@@ -43,11 +55,9 @@ object SudokuManager {
     fun setValorCelda(celda: Celda, valor: Int) {
         if (celda.editable) {
             executeCommand(SetValorCeldaCommand(celda, valor))
-            if (game!!.tablero.isCompleted()) {
-                game!!.finish()
-                if (onSudokuResueltoListener != null) {
-                    onSudokuResueltoListener!!.onSudokuResuelto()
-                }
+            if (game.tablero.isCompleted()) {
+                game.finish()
+                onSudokuResueltoListener.onSudokuResuelto()
             }
             validarTablero()
         }
@@ -58,9 +68,9 @@ object SudokuManager {
      *                      FUNCIONES
      *  ====================================================
      */
-    fun getValoresUsados() = game!!.tablero.getValoresUsados()
+    fun getValoresUsados() = game.tablero.getValoresUsados()
 
-    fun validarTablero() = game!!.validar()
+    fun validarTablero() = game.validar()
 
     fun limpiarNotas() = executeCommand(LimpiarNotasCommand())
 
@@ -73,10 +83,10 @@ object SudokuManager {
      */
 
     fun addTableroListener(listener: OnChangeListener) {
-        game!!.tablero.addOnChangeListener(listener)
+        game.tablero.addOnChangeListener(listener)
     }
 
-    val onSolvedListener: OnSudokuResueltoListener = object : OnSudokuResueltoListener {
+    private val onSolvedListener: OnSudokuResueltoListener = object : OnSudokuResueltoListener {
         override fun onSudokuResuelto() {
             println("Resuelto")
         }
@@ -88,17 +98,17 @@ object SudokuManager {
      *  ====================================================
      */
 
-    private fun executeCommand(c: EFECommand) = commandStack!!.execute(c)
+    private fun executeCommand(c: EFECommand) = commandStack.execute(c)
 
     fun undo() {
-        commandStack!!.undo()
+        commandStack.undo()
     }
 
-    fun hasSomethingToUndo(): Boolean = commandStack!!.hasSomethingToUndo()
+    fun hasSomethingToUndo(): Boolean = commandStack.hasSomethingToUndo()
 
-    fun setUndoCheckpoint() = commandStack!!.setCheckpoint()
+    fun setUndoCheckpoint() = commandStack.setCheckpoint()
 
-    fun undoToCheckpoint() = commandStack!!.undoToCheckpoint()
+    fun undoToCheckpoint() = commandStack.undoToCheckpoint()
 
-    fun hasUndoCheckpoint(): Boolean = commandStack!!.hasCheckpoint()
+    fun hasUndoCheckpoint(): Boolean = commandStack.hasCheckpoint()
 }

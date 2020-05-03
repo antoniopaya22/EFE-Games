@@ -27,13 +27,13 @@ class SetValorCeldaCommand (celda: Celda, private var value: Int) : EFECommand {
      *  ====================================================
      */
     override fun execute() {
-        val cell: Celda = SudokuManager.game!!.tablero.celdas[row][col]
+        val cell: Celda = SudokuManager.game.tablero.celdas[row][col]
         valueOld = cell.value
         cell.value = value
     }
 
     override fun undo() {
-        val cell: Celda = SudokuManager.game!!.tablero.celdas[row][col]
+        val cell: Celda = SudokuManager.game.tablero.celdas[row][col]
         cell.value = valueOld
     }
 }

@@ -19,7 +19,7 @@ class TicTacToe(
     }
 
     suspend fun makeMoveAPI(player: ECodesTicTacToe): Int {
-        var result = doInBack(player)
+        val result = doInBack(player)
         if(this.board.celdas[result] == 0){
             this.board.makeMove(result, player)
             return result
@@ -29,7 +29,7 @@ class TicTacToe(
 
     private suspend fun doInBack(player: ECodesTicTacToe) = withContext(Dispatchers.Default) {
         async {
-            var result = moveAPI.getNextMove(board.getTableroState(), player)
+            val result = moveAPI.getNextMove(board.getTableroState(), player)
             result
         }
     }.await()

@@ -40,13 +40,13 @@ class EditNotaCeldaCommand() : EFECommand {
      */
 
     override fun execute() {
-        val cell: Celda = SudokuManager.game!!.tablero.celdas[row][col]
+        val cell: Celda = SudokuManager.game.tablero.celdas[row][col]
         notaOld = cell.nota
         cell.nota = nota!!
     }
 
     override fun undo() {
-        val cell: Celda = SudokuManager.game!!.tablero.celdas[row][col]
+        val cell: Celda = SudokuManager.game.tablero.celdas[row][col]
         cell.nota = notaOld!!
     }
 }

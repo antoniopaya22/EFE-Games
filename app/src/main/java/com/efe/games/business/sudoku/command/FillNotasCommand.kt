@@ -27,7 +27,7 @@ class FillNotasCommand : EFECommand {
         notasViejas = ArrayList<NotaEntry>()
         for (r in 0 until Tablero.SUDOKU_SIZE) {
             for (c in 0 until Tablero.SUDOKU_SIZE) {
-                val celda: Celda = SudokuManager.game!!.tablero.celdas[r][c]
+                val celda: Celda = SudokuManager.game.tablero.celdas[r][c]
                 notasViejas.plus(NotaEntry(r, c, celda.nota))
                 celda.nota = NotaCelda()
                 val row = celda.row
@@ -43,7 +43,7 @@ class FillNotasCommand : EFECommand {
     }
 
     override fun undo() {
-        for (ne in notasViejas) SudokuManager.game!!.tablero.celdas[ne.row][ne.col].nota = ne.nota
+        for (ne in notasViejas) SudokuManager.game.tablero.celdas[ne.row][ne.col].nota = ne.nota
     }
 
     private class NotaEntry(var row: Int, var col: Int, var nota: NotaCelda)

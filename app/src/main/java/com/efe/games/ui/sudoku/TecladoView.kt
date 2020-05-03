@@ -100,7 +100,7 @@ class TecladoView : LinearLayout {
 
     private val mOnCellTapListener: OnTocarCeldaListener = object : OnTocarCeldaListener {
         override fun onCellTapped(celda: Celda) {
-            if (metodoActivo != -1 && metodosEscritura != null) {
+            if (metodoActivo != -1) {
                     metodosEscritura[metodoActivo].onCellTapped(celda)
                 }
             }
@@ -108,7 +108,7 @@ class TecladoView : LinearLayout {
 
     private val mOnCellSelected: OnCeldaSeleccionadaListener = object : OnCeldaSeleccionadaListener {
             override fun onCellSelect(celda: Celda) {
-                if (metodoActivo != -1 && metodosEscritura != null) {
+                if (metodoActivo != -1) {
                     metodosEscritura[metodoActivo].onCellSelected(celda)
                 }
             }

@@ -96,7 +96,7 @@ class VentanaTeclado : MetodoEscritura(){
             ventanaTecladoDialog!!.updateNota(cell.nota.numeros)
 
             val contadorValoresUsados =
-                SudokuManager.game!!.tablero.getValoresUsados()
+                SudokuManager.game.tablero.getValoresUsados()
             for ((key, value) in contadorValoresUsados!!) {
                 if (value >= Tablero.SUDOKU_SIZE) {
                     ventanaTecladoDialog!!.colorearNumero(key)

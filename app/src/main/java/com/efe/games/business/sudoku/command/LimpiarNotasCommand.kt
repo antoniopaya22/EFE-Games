@@ -26,7 +26,7 @@ class LimpiarNotasCommand : EFECommand {
         mOldNotes.clear()
         for (r in 0 until Tablero.SUDOKU_SIZE) {
             for (c in 0 until Tablero.SUDOKU_SIZE) {
-                val celda: Celda = SudokuManager.game!!.tablero.celdas[r][c]
+                val celda: Celda = SudokuManager.game.tablero.celdas[r][c]
                 val nota = celda.nota
                 if (!nota.isEmpty()) {
                     mOldNotes.add(NoteEntry(r, c, nota))
@@ -37,7 +37,7 @@ class LimpiarNotasCommand : EFECommand {
     }
 
     override fun undo() {
-        for (ne in mOldNotes) SudokuManager.game!!.tablero.celdas[ne.row][ne.col].nota = ne.nota
+        for (ne in mOldNotes) SudokuManager.game.tablero.celdas[ne.row][ne.col].nota = ne.nota
     }
 
     private class NoteEntry(var row: Int, var col: Int, var nota: NotaCelda)
