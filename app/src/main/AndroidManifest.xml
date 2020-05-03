@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.efe.games">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,19 +14,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.sudoku.SudokuActivity"
-            android:theme="@style/AppThemeSudokuConfiguracion" />
-        <activity
-            android:name=".ui.tictactoe.TicTacToeActivity"
-            android:theme="@style/AppThemeTicTacToeConfiguracion" />
-        <activity
-            android:name=".ui.MainActivity"
-            android:theme="@style/AppThemePrincipal">
+            android:name=".ui.SplashScreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.sudoku.SudokuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeSudokuConfiguracion"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.tictactoe.TicTacToeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeTicTacToeConfiguracion"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemePrincipal"
+            tools:ignore="LockedOrientationActivity">
         </activity>
     </application>
 

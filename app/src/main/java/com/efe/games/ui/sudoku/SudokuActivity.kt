@@ -74,4 +74,22 @@ class SudokuActivity : AppCompatActivity() {
         SudokuController.onResume()
     }
 
+    override fun onBackPressed() {
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("Partida en curso")
+            .setTitle("¿Estás seguro de que quieres salir")
+        builder.apply {
+            setPositiveButton("Si") { dialog, id ->
+                finish()
+            }
+            setNegativeButton("No", null)
+        }
+        builder.create()
+        builder.show()
+    }
+
 }
