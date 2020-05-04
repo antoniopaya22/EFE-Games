@@ -3,15 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/undo"
+        android:icon="@drawable/undo"
+        android:title="Deshacer"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/resolverSudoku"
         android:icon="@drawable/resolver_sudoku"
         android:title="Resolver Sudoku"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
-        android:id="@+id/hayTiempo"
+        android:id="@+id/hayMusicaSudoku"
         android:checkable="true"
         android:checked="true"
         android:icon="@drawable/ic_launcher_background"
-        android:title="Tiempo"
+        android:title="Musica"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/ayudaSudoku"
+        android:title="Ayuda" />
 </menu>

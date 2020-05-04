@@ -68,6 +68,15 @@ class Tablero(
         onChange()
     }
 
+    fun markAllAsNoEditable() {
+        onChangeEnabled = false
+        for (r in 0 until SUDOKU_SIZE) for (c in 0 until SUDOKU_SIZE) {
+            celdas[r][c].editable = false
+        }
+        onChangeEnabled = true
+        onChange()
+    }
+
     fun isCompleted(): Boolean {
         for (i in 0..8) for (j in 0..8) {
             if (celdas[i][j].value == 0 || !celdas[i][j].isValido)

@@ -102,9 +102,6 @@ class VentanaTeclado : MetodoEscritura(){
                     ventanaTecladoDialog!!.colorearNumero(key)
                 }
             }
-            for ((key, value) in contadorValoresUsados) {
-                ventanaTecladoDialog!!.setContadorValores(key, value)
-            }
             ventanaTecladoDialog!!.show()
 
         } else {

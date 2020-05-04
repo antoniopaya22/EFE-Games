@@ -1,8 +1,6 @@
 package com.efe.games.ui.tictactoe
 
-import android.content.ContentValues
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -10,13 +8,11 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
-import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.controller.tictactoe.TicTacToeController
 import com.efe.games.model.tictactoe.ECodesTicTacToe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class TicTacToeActivity : AppCompatActivity() {
