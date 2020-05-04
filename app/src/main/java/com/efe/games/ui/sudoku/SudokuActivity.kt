@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
+import com.efe.games.controller.UserController
 import com.efe.games.controller.sudoku.SudokuController
 
 class SudokuActivity : AppCompatActivity() {
@@ -118,6 +119,7 @@ class SudokuActivity : AppCompatActivity() {
     }
 
     fun onSudokuResuelto(puntos: Long) {
+        UserController.addPuntos(puntos)
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }
@@ -126,6 +128,7 @@ class SudokuActivity : AppCompatActivity() {
             .setMessage("Has resuelto el sudoku correctamente.\n " +
                     "Como recompensa has ganado $puntos puntos")
             .setTitle("¡FELICIDADES!")
+            .setCancelable(false)
         builder.apply {
             setPositiveButton("Salir") { _, _ ->
                 finish()
@@ -145,6 +148,7 @@ class SudokuActivity : AppCompatActivity() {
             .setMessage("Se te ha agotado el tiempo para resolver el sudoku.\n " +
                     "Puedes seguir jugando pero no ganarás puntos")
             .setTitle("¡OH VAYA!")
+            .setCancelable(false)
         builder.apply {
             setPositiveButton("Salir") { _, _ ->
                 finish()

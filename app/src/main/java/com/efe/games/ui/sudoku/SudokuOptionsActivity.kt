@@ -17,7 +17,7 @@ class SudokuOptionsActivity : AppCompatActivity() {
     private lateinit var swOpcionesAvanzadas: Switch
     private lateinit var swTiempo: Switch
     private lateinit var swMusica: Switch
-    private lateinit var btnJugar: FloatingActionButton
+    private lateinit var btnJugar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +62,8 @@ class SudokuOptionsActivity : AppCompatActivity() {
                 }
                 builder.create()
                 builder.show()
+            }else {
+                jugar()
             }
 
         }
