@@ -4,14 +4,8 @@
 
     <item
         android:id="@+id/play1v1"
-        android:icon="@drawable/resolver_sudoku"
+        android:icon="@drawable/ic_pvsp"
         android:title="Jugar 1v1"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/hayTiempo"
-        android:checkable="true"
-        android:checked="true"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="Tiempo"
-        app:showAsAction="never" />
+
 </menu>

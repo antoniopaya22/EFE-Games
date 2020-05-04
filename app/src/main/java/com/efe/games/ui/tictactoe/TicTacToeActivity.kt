@@ -130,17 +130,18 @@ class TicTacToeActivity : AppCompatActivity() {
             R.id.play1v1 -> {
                 TicTacToeController.changeMode()
                 onRestartGame()
-                true
-            }
-            R.id.hayTiempo -> {
-                /*
-                SudokuController.hayTiempo()
-                item.isChecked = !item.isChecked
-
-                 */
+                changePlay1v1Icon(item)
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun changePlay1v1Icon(item: MenuItem){
+        if(TicTacToeController.play1v1){
+            item.setIcon(R.drawable.ic_pvsai)
+        }else{
+            item.setIcon(R.drawable.ic_pvsp)
         }
     }
 }
