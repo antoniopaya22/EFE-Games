@@ -22,4 +22,13 @@
     <string name="tres_en_raya_name">TRES EN RAYA</string>
     <string name="ayuda_name">AYUDA</string>
     <string name="opciones_name">OPCIONES</string>
+    <string name="salir_main">Salir</string>
+
+    <string-array name="spDificultad">
+        <item>Muy Fácil</item>
+        <item>Fácil</item>
+        <item>Media</item>
+        <item>Difícil</item>
+        <item>Muy Difícil</item>
+    </string-array>
 </resources>

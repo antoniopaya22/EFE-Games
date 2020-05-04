@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
 import com.efe.games.ui.sudoku.SudokuActivity
+import com.efe.games.ui.sudoku.SudokuOptionsActivity
 import com.efe.games.ui.tictactoe.TicTacToeActivity
 
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         // Antonio
         val btn: Button = findViewById(R.id.buttonSudoku)
         btn.setOnClickListener {
-            val intent = Intent(this, SudokuActivity::class.java)
+            val intent = Intent(this, SudokuOptionsActivity::class.java)
             startActivity(intent)
         }
 

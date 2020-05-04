@@ -8,7 +8,7 @@
         android:title="Jugar 1v1"
         app:showAsAction="always" />
     <item
-        android:id="@+id/hayTiempo"
+        android:id="@+id/hayMusicaSudoku"
         android:checkable="true"
         android:checked="true"
         android:icon="@drawable/ic_launcher_background"

@@ -13,10 +13,13 @@
         android:title="Resolver Sudoku"
         app:showAsAction="never" />
     <item
-        android:id="@+id/hayTiempo"
+        android:id="@+id/hayMusicaSudoku"
         android:checkable="true"
         android:checked="true"
         android:icon="@drawable/ic_launcher_background"
-        android:title="Tiempo"
+        android:title="Musica"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/ayudaSudoku"
+        android:title="Ayuda" />
 </menu>

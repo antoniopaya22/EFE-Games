@@ -64,6 +64,8 @@ object SudokuManager {
         }
     }
 
+    fun markAllAsNoEdiable() = game.tablero.markAllAsNoEditable()
+
     /**
      *  ====================================================
      *                      FUNCIONES

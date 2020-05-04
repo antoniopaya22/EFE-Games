@@ -28,6 +28,9 @@
             android:theme="@style/AppThemeSudokuConfiguracion"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".ui.sudoku.SudokuOptionsActivity"
+            android:theme="@style/AppThemeSudokuConfiguracion" />
+        <activity
             android:name=".ui.tictactoe.TicTacToeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeTicTacToeConfiguracion"
@@ -36,8 +39,7 @@
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePrincipal"
-            tools:ignore="LockedOrientationActivity">
-        </activity>
+            tools:ignore="LockedOrientationActivity"></activity>
     </application>
 
 </manifest>
