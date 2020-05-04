@@ -30,9 +30,19 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, TicTacToeActivity::class.java)
             startActivity(intent)
         }
+
+        // Boton Salir
+        val btnSalir: Button = findViewById(R.id.buttonExit)
+        btnSalir.setOnClickListener {
+            salirAlert()
+        }
     }
 
     override fun onBackPressed() {
+        salirAlert()
+    }
+
+    fun salirAlert() {
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }
