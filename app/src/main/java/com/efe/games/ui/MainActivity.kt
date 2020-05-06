@@ -6,27 +6,31 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
+import com.efe.games.controller.MusicController
 import com.efe.games.controller.UserController
-import com.efe.games.model.User
-import com.efe.games.ui.sudoku.SudokuActivity
 import com.efe.games.ui.sudoku.SudokuOptionsActivity
 import com.efe.games.ui.tictactoe.TicTacToeActivity
+import com.efe.games.ui.util.AnimacionButton
 
 
 class MainActivity : AppCompatActivity() {
 
+    private var activity: MainActivity = this
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val preferences: SharedPreferences = getSharedPreferences("Users", Context.MODE_PRIVATE)
-
-        UserController.init(preferences.getString("UserActivo", null))
+        // SET PREFERENCES
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        UserController.init(preferences!!.getString("UserActivo", null))
         if (UserController.usuarioActual == null) {
             crearUsuario()
         }
@@ -34,36 +38,89 @@ class MainActivity : AppCompatActivity() {
         // Antonio
         val btn: Button = findViewById(R.id.buttonSudoku)
         btn.setOnClickListener {
+            val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
+            val interpolator = AnimacionButton(0.8, 10.0)
+            myAnim.interpolator = interpolator
+            btn.startAnimation(myAnim)
             val intent = Intent(this, SudokuOptionsActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
         }
 
         // Alba
         val btn2: Button = findViewById(R.id.buttonTicTacToe)
         btn2.setOnClickListener {
+            val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
+            val interpolator = AnimacionButton(0.8, 10.0)
+            myAnim.interpolator = interpolator
+            btn2.startAnimation(myAnim)
             val intent = Intent(this, TicTacToeActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
         }
 
         // Boton opciones
         val btnOpciones : Button = findViewById(R.id.buttonOptions)
         btnOpciones.setOnClickListener {
+            val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
+            val interpolator = AnimacionButton(0.8, 10.0)
+            myAnim.interpolator = interpolator
+            btnOpciones.startAnimation(myAnim)
             val intent = Intent(this, OptionsActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
+        }
+
+        // Boton info
+        val btnInfo : Button = findViewById(R.id.buttonHelp)
+        btnInfo.setOnClickListener {
+            val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
+            val interpolator = AnimacionButton(0.8, 10.0)
+            myAnim.interpolator = interpolator
+            btnInfo.startAnimation(myAnim)
+            infoAlert()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
         }
 
         // Boton Salir
         val btnSalir: Button = findViewById(R.id.buttonExit)
         btnSalir.setOnClickListener {
+            val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
+            val interpolator = AnimacionButton(0.8, 10.0)
+            myAnim.interpolator = interpolator
+            btnSalir.startAnimation(myAnim)
             salirAlert()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
     }
 
     override fun onBackPressed() {
         salirAlert()
     }
 
-    fun salirAlert() {
+    private fun infoAlert() {
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder
+            .setIcon(android.R.drawable.ic_dialog_info)
+            .setMessage("App creada por Antonio Payá González y Alba Cotarelo Tuñón")
+            .setTitle("Sobre los creadores")
+        builder.apply {
+            setNegativeButton("Son unos grandes", null)
+        }
+        builder.create()
+        builder.show()
+    }
+
+
+    private fun salirAlert() {
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }
@@ -73,7 +130,8 @@ class MainActivity : AppCompatActivity() {
             .setTitle("¿Estás seguro de que quieres salir?")
         builder.apply {
             setPositiveButton("Si") { _, _ ->
-                finish()
+                finishAffinity()
+                activity.onDestroy()
             }
             setNegativeButton("No", null)
         }
@@ -81,11 +139,11 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
-    fun crearUsuario() {
+    private fun crearUsuario() {
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }
-        var input = EditText(this)
+        val input = EditText(this)
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder
             .setIcon(android.R.drawable.ic_dialog_alert)
@@ -96,8 +154,7 @@ class MainActivity : AppCompatActivity() {
             setPositiveButton("Ok") { dialog, _ ->
                 val username = input.text.toString()
                 UserController.addUser(username)
-                val preferences: SharedPreferences = getSharedPreferences("Users", Context.MODE_PRIVATE)
-                val editor = preferences.edit()
+                val editor = preferences!!.edit()
                 editor.putString("UserActivo", username)
                 editor.apply()
                 dialog.dismiss()

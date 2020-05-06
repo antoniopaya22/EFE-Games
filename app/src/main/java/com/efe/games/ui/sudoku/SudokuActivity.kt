@@ -1,11 +1,13 @@
 package com.efe.games.ui.sudoku
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
+import com.efe.games.controller.MusicController
 import com.efe.games.controller.UserController
 import com.efe.games.controller.sudoku.SudokuController
 
@@ -14,12 +16,14 @@ class SudokuActivity : AppCompatActivity() {
     private var dificultad: Int = 0
     private var tiempo: Boolean = true
     private var musica: Boolean = true
+    private val activity: SudokuActivity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dificultad = intent.getIntExtra("dificultad", 1)
         tiempo = intent.getBooleanExtra("tiempo", true)
-        musica = intent.getBooleanExtra("musica", true)
+        musica = MusicController.isPlaying
+
         this.setTheme(R.style.Theme_Default)
         setContentView(R.layout.activity_sudoku)
 
@@ -31,7 +35,7 @@ class SudokuActivity : AppCompatActivity() {
             else -> 30*60000L
         } else 0L
         // Crear partida
-        SudokuController.iniciarPartida(this, findViewById(R.id.tablero), dificultad, tiempoParaResolver, tiempo)
+        SudokuController.iniciarPartida(activity, findViewById(R.id.tablero), dificultad, tiempoParaResolver, tiempo)
         // Añadir teclado
         SudokuController.addTeclado(findViewById(R.id.teclado))
         SudokuController.activarTeclado()
@@ -40,6 +44,7 @@ class SudokuActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.sudoku_menu, menu)
+        menu!!.findItem(R.id.hayMusicaSudoku).isChecked = musica
         return true
     }
 
@@ -67,6 +72,10 @@ class SudokuActivity : AppCompatActivity() {
                 true
             }
             R.id.hayMusicaSudoku -> {
+                musica = !musica
+                item.isChecked = musica
+                if(!musica) MusicController.stopMusic(this)
+                else MusicController.startMusic(this)
                 true
             }
             R.id.ayudaSudoku -> {
@@ -110,7 +119,7 @@ class SudokuActivity : AppCompatActivity() {
             .setTitle("¿Estás seguro de que quieres salir")
         builder.apply {
             setPositiveButton("Si") { _, _ ->
-                finish()
+                salir()
             }
             setNegativeButton("No", null)
         }
@@ -131,7 +140,7 @@ class SudokuActivity : AppCompatActivity() {
             .setCancelable(false)
         builder.apply {
             setPositiveButton("Salir") { _, _ ->
-                finish()
+                salir()
             }
             setNegativeButton("Ver sudoku", null)
         }
@@ -151,12 +160,18 @@ class SudokuActivity : AppCompatActivity() {
             .setCancelable(false)
         builder.apply {
             setPositiveButton("Salir") { _, _ ->
-                finish()
+                salir()
             }
             setNegativeButton("Seguir jugando", null)
         }
         builder.create()
         builder.show()
+    }
+
+    private fun salir() {
+        val preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(!preferences!!.getBoolean("Musica", true)) MusicController.stopMusic(activity)
+        finish()
     }
 
 }

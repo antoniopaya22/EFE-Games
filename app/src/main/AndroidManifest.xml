@@ -42,6 +42,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePrincipal"
             tools:ignore="LockedOrientationActivity" />
+
+        <service android:name=".business.MusicService" />
     </application>
 
 </manifest>

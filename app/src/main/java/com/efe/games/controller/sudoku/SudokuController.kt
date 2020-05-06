@@ -75,9 +75,9 @@ object SudokuController {
 
     private fun getHuecosPorDificultad(dificultad: Int): Int =
         when (dificultad) {
-            0 -> 25
-            1 -> 30
-            2 -> 40
+            0 -> 15
+            1 -> 25
+            2 -> 35
             3 -> 45
             else -> 50
         }

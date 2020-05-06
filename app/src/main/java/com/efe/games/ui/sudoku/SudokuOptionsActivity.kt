@@ -7,16 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.efe.games.R
-import com.efe.games.controller.sudoku.SudokuController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
 
 class SudokuOptionsActivity : AppCompatActivity() {
 
     private lateinit var spDificultad: Spinner
     private lateinit var swOpcionesAvanzadas: Switch
     private lateinit var swTiempo: Switch
-    private lateinit var swMusica: Switch
     private lateinit var btnJugar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +22,6 @@ class SudokuOptionsActivity : AppCompatActivity() {
         this.spDificultad = findViewById(R.id.spDificultad)
         this.swOpcionesAvanzadas = findViewById(R.id.switchOpcionesAvanzadas)
         this.swTiempo = findViewById(R.id.switchTiempo)
-        this.swMusica = findViewById(R.id.switchMusica)
         this.btnJugar = findViewById(R.id.btnJugar)
 
         ArrayAdapter.createFromResource(this, R.array.spDificultad,
@@ -35,14 +30,9 @@ class SudokuOptionsActivity : AppCompatActivity() {
             spDificultad.adapter = adapter
         }
 
-        swOpcionesAvanzadas.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                swMusica.setVisibility(View.VISIBLE)
-                swTiempo.setVisibility(View.VISIBLE)
-            } else {
-                swMusica.setVisibility(View.INVISIBLE)
-                swTiempo.setVisibility(View.INVISIBLE)
-            }
+        swOpcionesAvanzadas.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) swTiempo.visibility = View.VISIBLE
+            else swTiempo.visibility = View.INVISIBLE
         }
 
         btnJugar.setOnClickListener {
@@ -70,7 +60,7 @@ class SudokuOptionsActivity : AppCompatActivity() {
 
     }
 
-    fun jugar() {
+    private fun jugar() {
         val intent = Intent(this, SudokuActivity::class.java)
         val dificultad = when (this.spDificultad.selectedItem) {
             "Muy Fácil"-> 0
@@ -81,7 +71,6 @@ class SudokuOptionsActivity : AppCompatActivity() {
         }
         intent.putExtra("dificultad", dificultad)
         intent.putExtra("tiempo", this.swTiempo.isChecked)
-        intent.putExtra("musica", this.swMusica.isChecked)
         startActivity(intent)
     }
 

@@ -20,7 +20,7 @@
     <string name="ventana_teclado_dialog_cerrar">Ok</string>
     <string name="sudoku_name">SUDOKU</string>
     <string name="tres_en_raya_name">TRES EN RAYA</string>
-    <string name="ayuda_name">AYUDA</string>
+    <string name="ayuda_name">INFO</string>
     <string name="opciones_name">OPCIONES</string>
     <string name="salir_main">Salir</string>
 
