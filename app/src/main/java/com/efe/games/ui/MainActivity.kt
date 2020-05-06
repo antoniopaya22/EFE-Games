@@ -17,6 +17,7 @@ import com.efe.games.controller.UserController
 import com.efe.games.ui.sudoku.SudokuOptionsActivity
 import com.efe.games.ui.tictactoe.TicTacToeActivity
 import com.efe.games.ui.util.AnimacionButton
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -130,8 +131,8 @@ class MainActivity : AppCompatActivity() {
             .setTitle("¿Estás seguro de que quieres salir?")
         builder.apply {
             setPositiveButton("Si") { _, _ ->
-                finishAffinity()
-                activity.onDestroy()
+                activity.finish()
+                exitProcess(0)
             }
             setNegativeButton("No", null)
         }

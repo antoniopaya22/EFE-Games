@@ -14,7 +14,6 @@
         android:roundIcon="@drawable/ic_efe_games_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.OptionsActivity"></activity>
         <activity
             android:name=".ui.SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -37,6 +36,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeTicTacToeConfiguracion"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.OptionsActivity"
+            android:theme="@style/AppThemeSudokuConfiguracion" />
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"

@@ -2,7 +2,6 @@ package com.efe.games.ui.sudoku.escritura
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.graphics.LightingColorFilter
 import android.view.LayoutInflater
 import android.view.View
