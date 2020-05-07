@@ -24,6 +24,11 @@ class SudokuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         dificultad = intent.getIntExtra("dificultad", 1)
         tiempo = intent.getBooleanExtra("tiempo", true)
+
+        // Musica
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+
         musica = MusicController.isPlaying
 
         this.setTheme(R.style.Theme_Default)
@@ -104,14 +109,13 @@ class SudokuActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         SudokuController.onPause()
-        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
-        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+        MusicController.stopMusic(this)
     }
 
     override fun onResume() {
         super.onResume()
         SudokuController.onResume()
-        MusicController.stopMusic(this)
+        if(musica) MusicController.startMusic(this)
     }
 
     override fun onBackPressed() {
