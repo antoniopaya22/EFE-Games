@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
 import com.efe.games.controller.MusicController
-import com.efe.games.controller.sudoku.SudokuController
+import com.efe.games.controller.UserController
 import com.efe.games.controller.tictactoe.TicTacToeController
 import com.efe.games.model.tictactoe.ECodesTicTacToe
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +31,7 @@ class TicTacToeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.playMode = intent.getIntExtra("playMode", 0)
+        this.takenPiece = -1
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
 
@@ -202,6 +203,7 @@ class TicTacToeActivity : AppCompatActivity() {
                 if (status == ECodesTicTacToe.PLAYING_CODE) {
                     txtStatus.text = getString(R.string.tu_turno)
                 } else if (status == ECodesTicTacToe.P1_CODE) {
+                    UserController.addPuntos(100)
                     txtStatus.text = getString(R.string.has_ganado)
                 } else if (status == ECodesTicTacToe.P2_CODE) {
                     txtStatus.text = getString(R.string.has_perdido)
@@ -269,6 +271,7 @@ class TicTacToeActivity : AppCompatActivity() {
     }
 
     private fun salir() {
+        onRestartGame()
         if(!musica) MusicController.stopMusic(this)
         finish()
     }

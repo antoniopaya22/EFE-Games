@@ -4,8 +4,6 @@ import com.efe.games.model.tictactoe.ECodesTicTacToe
 import com.efe.games.business.tictactoe.TicTacToe
 
 object TicTacToeController {
-    var play1v1: Boolean = false
-    var playMode:Int = 3
     val tictactoe: TicTacToe = TicTacToe()
     var full:Boolean = false
 
@@ -27,16 +25,8 @@ object TicTacToeController {
        this.tictactoe.restartGame()
     }
 
-    fun changeMode() {
-        this.play1v1 = !this.play1v1
-    }
-
     fun getTurn(): ECodesTicTacToe {
         return this.tictactoe.getTurn()
-    }
-
-    fun getNumberOfPieces(): Int {
-        return this.tictactoe.getNumberOfPieces()
     }
 
     fun unmakeMove(move: Int) {
