@@ -1,16 +1,18 @@
 package com.efe.games.ui.tictactoe
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.efe.games.R
-
+import com.efe.games.controller.MusicController
 
 
 class TicTacToeOptionsActivity : AppCompatActivity() {
 
-
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,17 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
         }
         intent.putExtra("playMode", playmode)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(this)
     }
 
 }

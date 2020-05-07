@@ -1,11 +1,16 @@
 package com.efe.games.ui.tictactoe
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.efe.games.R
+import com.efe.games.controller.MusicController
+import com.efe.games.controller.sudoku.SudokuController
 import com.efe.games.controller.tictactoe.TicTacToeController
 import com.efe.games.model.tictactoe.ECodesTicTacToe
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +19,9 @@ import kotlinx.coroutines.launch
 
 
 class TicTacToeActivity : AppCompatActivity() {
+    private var preferences: SharedPreferences? = null
+    private var musica: Boolean = true
+
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private lateinit var txtStatus:TextView
     private var thinking: Boolean = false
@@ -25,6 +33,12 @@ class TicTacToeActivity : AppCompatActivity() {
         this.playMode = intent.getIntExtra("playMode", 0)
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
+
+        // Musica
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+        musica = MusicController.isPlaying
+
         initStatus()
 
         for (i in 0..8) {
@@ -224,6 +238,39 @@ class TicTacToeActivity : AppCompatActivity() {
             }
             initStatus()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(musica) MusicController.startMusic(this)
+    }
+
+    override fun onBackPressed() {
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("Partida en curso")
+            .setTitle("¿Estás seguro de que quieres salir")
+        builder.apply {
+            setPositiveButton("Si") { _, _ ->
+                salir()
+            }
+            setNegativeButton("No", null)
+        }
+        builder.create()
+        builder.show()
+    }
+
+    private fun salir() {
+        if(!musica) MusicController.stopMusic(this)
+        finish()
     }
 
     private fun initStatus(){
