@@ -72,4 +72,15 @@ class OptionsActivity : AppCompatActivity() {
             builder.show()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(this)
+    }
 }

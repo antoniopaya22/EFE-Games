@@ -2,6 +2,7 @@ package com.efe.games.ui.sudoku
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +18,7 @@ class SudokuActivity : AppCompatActivity() {
     private var tiempo: Boolean = true
     private var musica: Boolean = true
     private val activity: SudokuActivity = this
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,11 +104,14 @@ class SudokuActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         SudokuController.onPause()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
     }
 
     override fun onResume() {
         super.onResume()
         SudokuController.onResume()
+        MusicController.stopMusic(this)
     }
 
     override fun onBackPressed() {
@@ -167,6 +172,7 @@ class SudokuActivity : AppCompatActivity() {
         builder.create()
         builder.show()
     }
+
 
     private fun salir() {
         val preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)

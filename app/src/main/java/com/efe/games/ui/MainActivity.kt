@@ -98,7 +98,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
-        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(activity)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(activity)
     }
 
     override fun onBackPressed() {

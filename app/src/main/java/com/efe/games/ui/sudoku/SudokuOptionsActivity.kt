@@ -1,12 +1,15 @@
 package com.efe.games.ui.sudoku
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.efe.games.R
+import com.efe.games.controller.MusicController
 
 class SudokuOptionsActivity : AppCompatActivity() {
 
@@ -14,6 +17,7 @@ class SudokuOptionsActivity : AppCompatActivity() {
     private lateinit var swOpcionesAvanzadas: Switch
     private lateinit var swTiempo: Switch
     private lateinit var btnJugar: Button
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +76,17 @@ class SudokuOptionsActivity : AppCompatActivity() {
         intent.putExtra("dificultad", dificultad)
         intent.putExtra("tiempo", this.swTiempo.isChecked)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(this)
     }
 
 }

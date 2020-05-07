@@ -18,19 +18,21 @@ class MusicService : Service(){
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if(isPlaying) return START_STICKY
-        mediaPlayer = MediaPlayer.create(this, R.raw.music)
-        mediaPlayer!!.isLooping = true
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.music)
+            mediaPlayer!!.isLooping = true
+        }
         mediaPlayer!!.start()
         isPlaying = true
         return START_STICKY
     }
 
     override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer!!.stop()
+        if (mediaPlayer != null) {
+            super.onDestroy()
+            mediaPlayer!!.stop()
+        }
         isPlaying = false
-        mediaPlayer!!.release()
-        mediaPlayer = null
     }
 
 }
