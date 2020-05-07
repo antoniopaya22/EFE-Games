@@ -5,31 +5,24 @@ class TableroTicTacToe (
     var playerTurn:ECodesTicTacToe = ECodesTicTacToe.P1_CODE
 ){
 
-    fun makeMove(position: Int, player: ECodesTicTacToe) {
-        this.celdas[position] = player.ordinal;
-        changePlayerTurn()
-    }
-
     fun changePlayerTurn(){
         if(this.playerTurn == ECodesTicTacToe.P1_CODE) this.playerTurn = ECodesTicTacToe.P2_CODE
         else this.playerTurn = ECodesTicTacToe.P1_CODE
     }
 
     fun getGameStatus(): ECodesTicTacToe {
-        var win: ECodesTicTacToe = ECodesTicTacToe.PLAYING_CODE
         //Check rows
         for (i in 0 until 9 step 3){
-            var a = this.celdas[i]
+            val a = this.celdas[i]
             if(a != ECodesTicTacToe.PLAYING_CODE.ordinal) {
-                if (a == this.celdas[i + 1] && a == this.celdas[i + 2]) return convertGameStatus(a); // There is a win
+                if (a == this.celdas[i + 1] && a == this.celdas[i + 2]) return convertGameStatus(a) // There is a win
             }
         }
         //Check columns
         for (i in 0 until 3 step 1){
-            var a = this.celdas[i]
-            println(this.celdas.contentToString() +" "+ i)
+            val a = this.celdas[i]
             if(a != ECodesTicTacToe.PLAYING_CODE.ordinal) {
-                if (a == this.celdas[i + 3] && a == this.celdas[i + 6]) return convertGameStatus(a); // There is a win
+                if (a == this.celdas[i + 3] && a == this.celdas[i + 6]) return convertGameStatus(a) // There is a win
             }
         }
         //Check diagonals
@@ -53,13 +46,29 @@ class TableroTicTacToe (
     fun getTableroState():String{
         var tableroStr = ""
         for(i in 0 until 9){
-            var cell = this.celdas[i]
-            if(cell == 0) tableroStr += "-"
-            else if(cell == ECodesTicTacToe.P1_CODE.ordinal) tableroStr += "X"
-            else tableroStr += "O"
+            val cell = this.celdas[i]
+            tableroStr += when (cell) {
+                0 -> {
+                    "-"
+                }
+                ECodesTicTacToe.P1_CODE.ordinal -> "X"
+                else -> "O"
+            }
         }
         return tableroStr
     }
+
+    fun getNumberOfPieces(): Int {
+        var number = 0
+        for(i in 0 until 9){
+            if(this.celdas[i] != 0) {
+                number++
+            }
+        }
+        return number
+    }
+
+
 
 
 }

@@ -1,8 +1,6 @@
 package com.efe.games.ui.tictactoe
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -18,16 +16,19 @@ import kotlinx.coroutines.launch
 class TicTacToeActivity : AppCompatActivity() {
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private lateinit var txtStatus:TextView
+    private var thinking: Boolean = false
+    private var takenPiece: Int = -1
+    private var playMode: Int = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
-        txtStatus.text = "Tu turno"
+        initStatus()
 
         for (i in 0..8) {
             val id = resources.getIdentifier("board$i", "id", packageName)
-            var btn: ImageButton = findViewById(id) as ImageButton
+            val btn = findViewById<ImageButton>(id)
             btn.setOnClickListener { onMove(btn, i) }
         }
 
@@ -35,109 +36,206 @@ class TicTacToeActivity : AppCompatActivity() {
         btRestart.setOnClickListener { onRestartGame() }
     }
 
-    fun onMove(cell:ImageButton, move:Int) {
-        var status = TicTacToeController.getGameStatus()
-        if(!TicTacToeController.play1v1){
+    private fun onMove(cell:ImageButton, move:Int) {
+        if(!this.thinking) {
+            val status = TicTacToeController.getGameStatus()
             if (status == ECodesTicTacToe.PLAYING_CODE) {
-                txtStatus.text = "Pensando..."
-                var nextMove: Int = -1
-                var move = TicTacToeController.makeMoveUser(move)
-                if (move >= 0) {
-
-                    cell.setImageResource(R.drawable.ic_cross)
-                    uiScope.launch {
-                        nextMove = TicTacToeController.makeMoveAPI()
-                        if (nextMove >= 0) {
-                            val id = resources.getIdentifier("board$nextMove", "id", packageName)
-                            var btn: ImageButton = findViewById(id) as ImageButton
-                            btn.setImageResource(R.drawable.ic_circle)
-                        }
-                        status = TicTacToeController.getGameStatus()
-                        this@TicTacToeActivity.setStatus(status)
-                    }
+                when(this.playMode) {
+                    0 -> modeAILimited(move, cell)
+                    1 -> modeAIInfinite(move, cell)
+                    2 -> mode1v1Limited(move, cell)
+                    3 -> mode1v1Infinite(move, cell)
                 }
             }
+        }
+    }
+
+    private fun modeAILimited(move:Int, cell:ImageButton):Int{
+        val nextMove = TicTacToeController.makeMoveUser(move)
+        if (nextMove >= 0) {
+            txtStatus.text = getString(R.string.pensando)
+            cell.setImageResource(R.drawable.ic_cross)
+            moveFromAPI()
+        }
+        return move
+    }
+
+    private fun modeAIInfinite(currentMove:Int, cell:ImageButton){
+        if(!TicTacToeController.filledBoard()){
+            modeAILimited(currentMove, cell)
         }else{
-            if (status == ECodesTicTacToe.PLAYING_CODE) {
-                var move = TicTacToeController.makeMoveUser(move)
-                if (move >= 0) {
-                    if (TicTacToeController.getTurn() == ECodesTicTacToe.P2_CODE) {
+            if(this.takenPiece == -1){
+                if(TicTacToeController.validInfiniteMove(currentMove)){
+                    this.takenPiece = currentMove
+                    // Remark pressed piece
+                    val id:Int = resources.getIdentifier("board${this.takenPiece}", "id", packageName)
+                    val btn = findViewById<ImageButton>(id)
+                    btn.setImageResource(R.drawable.ic_cross_marked)
+                }
+            }else{
+                TicTacToeController.unmakeMove(this.takenPiece)
+
+                var id: Int = resources.getIdentifier("board${this.takenPiece}", "id", packageName)
+                var btn = findViewById<ImageButton>(id)
+                val move:Int = TicTacToeController.makeMoveUser(currentMove)
+
+                if (move >= 0 && TicTacToeController.getGameStatus() == ECodesTicTacToe.PLAYING_CODE) {
+
+                    btn.setImageResource(R.drawable.ic_clean)
+                    cell.setImageResource(R.drawable.ic_cross)
+                    val unmadeMove:Int = TicTacToeController.unmakeMoveAI()
+                    id = resources.getIdentifier("board${unmadeMove}", "id", packageName)
+                    btn = findViewById<ImageButton>(id)
+                    btn.setImageResource(R.drawable.ic_clean)
+
+                    cell.setImageResource(R.drawable.ic_cross)
+                    moveFromAPI()
+                    this.takenPiece = -1
+                }else if(move >= 0){
+                    btn.setImageResource(R.drawable.ic_clean)
+                    cell.setImageResource(R.drawable.ic_cross)
+                    this@TicTacToeActivity.setStatus()
+                }else{
+                    this@TicTacToeActivity.setStatus()
+                }
+
+            }
+        }
+    }
+
+    private fun moveFromAPI(){
+        uiScope.launch {
+            this@TicTacToeActivity.thinking = true
+            val nextMove:Int = TicTacToeController.makeMoveAPI()
+            if (nextMove >= 0) {
+                val id = resources.getIdentifier("board$nextMove", "id", packageName)
+                val btn: ImageButton = findViewById<ImageButton>(id)
+                btn.setImageResource(R.drawable.ic_circle)
+            }
+            this@TicTacToeActivity.thinking = false
+            this@TicTacToeActivity.setStatus()
+        }
+    }
+
+    private fun mode1v1Limited(currentMove:Int, cell:ImageButton):Int{
+        val move:Int = TicTacToeController.makeMoveUser(currentMove)
+        if (move >= 0) {
+            if (TicTacToeController.getTurn() == ECodesTicTacToe.P2_CODE) {
+                cell.setImageResource(R.drawable.ic_cross)
+            } else {
+                cell.setImageResource(R.drawable.ic_circle)
+            }
+            setStatus()
+        }
+        return move
+    }
+
+    private fun mode1v1Infinite(currentMove:Int, cell:ImageButton){
+        println("INFINITEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+        if(!TicTacToeController.filledBoard()){
+            println("NOT FILLED")
+            mode1v1Limited(currentMove, cell)
+        }else{
+            if(this.takenPiece == -1){
+                if(TicTacToeController.validInfiniteMove(currentMove)){
+                    this.takenPiece = currentMove
+                    // Remark pressed piece
+                    val id:Int = resources.getIdentifier("board${this.takenPiece}", "id", packageName)
+                    val btn = findViewById<ImageButton>(id)
+                    if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE) {
+                        btn.setImageResource(R.drawable.ic_cross_marked)
+                    }else{
+                        btn.setImageResource(R.drawable.ic_circle_marked)
+                    }
+                }
+            }else{
+                TicTacToeController.unmakeMove(this.takenPiece)
+
+                val id: Int = resources.getIdentifier("board${this.takenPiece}", "id", packageName)
+                val btn = findViewById<ImageButton>(id)
+                val turn = TicTacToeController.getTurn()
+                val move:Int = TicTacToeController.makeMoveUser(currentMove)
+                if (move >= 0 && TicTacToeController.getGameStatus() == ECodesTicTacToe.PLAYING_CODE) {
+                    btn.setImageResource(R.drawable.ic_clean)
+                    if (turn == ECodesTicTacToe.P1_CODE) {
                         cell.setImageResource(R.drawable.ic_cross)
                     } else {
                         cell.setImageResource(R.drawable.ic_circle)
                     }
-                    status = TicTacToeController.getGameStatus()
-                    setStatus(status)
-                }
-            }
-        }
-    }
-    private fun setStatus(status: ECodesTicTacToe) {
-        if(!TicTacToeController.play1v1) {
-            if (status == ECodesTicTacToe.PLAYING_CODE) {
-                txtStatus.text = "Tu turno"
-            } else if (status == ECodesTicTacToe.P1_CODE) {
-                txtStatus.text = "Has ganado"
-            } else if (status == ECodesTicTacToe.P2_CODE) {
-                txtStatus.text = "Has perdido"
-            } else {
-                txtStatus.text = "Empate"
-            }
-        }else{
-            if (status == ECodesTicTacToe.PLAYING_CODE) {
-                if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE){
-                    txtStatus.text = "Turno del jugador 1"
+                    setStatus()
+                    this.takenPiece = -1
+                }else if(move >= 0){
+
+                    btn.setImageResource(R.drawable.ic_clean)
+                    if (turn == ECodesTicTacToe.P1_CODE) {
+                        cell.setImageResource(R.drawable.ic_cross)
+                    } else {
+                        cell.setImageResource(R.drawable.ic_circle)
+                    }
+                    setStatus()
                 }else{
-                    txtStatus.text = "Turno del jugador 2"
+                    setStatus()
                 }
-            } else if (status == ECodesTicTacToe.P1_CODE) {
-                txtStatus.text = "Gana el jugador 1"
-            } else if (status == ECodesTicTacToe.P2_CODE) {
-                txtStatus.text = "Gana el jugador 2"
-            } else {
-                txtStatus.text = "Empate"
             }
         }
     }
 
-    fun onRestartGame(){
-        TicTacToeController.restartGame()
-        for (i in 0..8) {
-            val id = resources.getIdentifier("board$i", "id", packageName)
-            var btn: ImageButton = findViewById(id) as ImageButton
-            btn.setImageResource(R.drawable.ic_clean)
-        }
-        if(!TicTacToeController.play1v1) {
-            txtStatus.text = "Tu turno"
-        }else{
-            txtStatus.text = "Turno del jugador 1"
-        }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.tictactoe_menu, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
-            R.id.play1v1 -> {
-                TicTacToeController.changeMode()
-                onRestartGame()
-                changePlay1v1Icon(item)
-                true
+    private fun setStatus() {
+        val status = TicTacToeController.getGameStatus()
+        when(this.playMode) {
+            0, 1 -> {
+                if (status == ECodesTicTacToe.PLAYING_CODE) {
+                    txtStatus.text = getString(R.string.tu_turno)
+                } else if (status == ECodesTicTacToe.P1_CODE) {
+                    txtStatus.text = getString(R.string.has_ganado)
+                } else if (status == ECodesTicTacToe.P2_CODE) {
+                    txtStatus.text = getString(R.string.has_perdido)
+                } else {
+                    txtStatus.text = getString(R.string.empate)
+                }
             }
-            else -> super.onOptionsItemSelected(item)
+            2, 3 -> {
+                if (status == ECodesTicTacToe.PLAYING_CODE) {
+                    if(TicTacToeController.getTurn() == ECodesTicTacToe.P1_CODE){
+                        txtStatus.text = getString(R.string.turno_j1)
+                    }else{
+                        txtStatus.text = getString(R.string.turno_j2)
+                    }
+                } else if (status == ECodesTicTacToe.P1_CODE) {
+                    txtStatus.text = getString(R.string.gana_j1)
+                } else if (status == ECodesTicTacToe.P2_CODE) {
+                    txtStatus.text = getString(R.string.gana_j2)
+                } else {
+                    txtStatus.text = getString(R.string.empate)
+                }
+            }
         }
     }
 
-    fun changePlay1v1Icon(item: MenuItem){
-        if(TicTacToeController.play1v1){
-            item.setIcon(R.drawable.ic_pvsai)
-        }else{
-            item.setIcon(R.drawable.ic_pvsp)
+    private fun onRestartGame(){
+        if(!this.thinking) {
+            TicTacToeController.restartGame()
+            this.takenPiece = -1
+            for (i in 0..8) {
+                val id = resources.getIdentifier("board$i", "id", packageName)
+                val btn = findViewById<ImageButton>(id)
+                btn.setImageResource(R.drawable.ic_clean)
+            }
+            initStatus()
         }
     }
+
+    private fun initStatus(){
+        when(this.playMode) {
+            0, 1 -> {
+                txtStatus.text = getString(R.string.tu_turno)
+            }
+            2, 3 -> {
+                txtStatus.text = getString(R.string.turno_j1)
+            }
+        }
+    }
+
 }

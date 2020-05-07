@@ -11,7 +11,7 @@ class TicTacToe(
 
     fun makeMoveUser(move:Int):Int{
         if(this.board.celdas[move] == 0){
-            this.board.makeMove(move, this.board.playerTurn)
+            makeMove(move)
             return move
         }
         return -1
@@ -20,10 +20,14 @@ class TicTacToe(
     suspend fun makeMoveAPI(player: ECodesTicTacToe): Int {
         val result = doInBack(player)
         if(this.board.celdas[result] == 0){
-            this.board.makeMove(result, player)
+            makeMove(result)
             return result
         }
         return -1
+    }
+    private fun makeMove(position: Int) {
+        this.board.celdas[position] = this.board.playerTurn.ordinal
+        this.board.changePlayerTurn()
     }
 
     private suspend fun doInBack(player: ECodesTicTacToe) = withContext(Dispatchers.Default) {
@@ -39,6 +43,31 @@ class TicTacToe(
 
     fun getTurn(): ECodesTicTacToe {
         return this.board.playerTurn
+    }
+
+    fun getNumberOfPieces(): Int {
+        return this.board.getNumberOfPieces()
+    }
+
+    fun unmakeMove(move: Int) {
+        this.board.celdas[move] = 0
+    }
+
+    fun unmakeMoveAI(): Int {
+        val pieces = mutableListOf<Int>()
+        for (i in 0..8) {
+            if(this.board.celdas[i] == ECodesTicTacToe.P2_CODE.ordinal){
+                pieces.add(i)
+            }
+        }
+        val pick = (0 until pieces.size).random()
+        val move = pieces[pick]
+        unmakeMove(move)
+        return move
+    }
+
+    fun validInfiniteMove(currentMove: Int): Boolean {
+        return this.board.celdas[currentMove] == this.board.playerTurn.ordinal
     }
 
 }

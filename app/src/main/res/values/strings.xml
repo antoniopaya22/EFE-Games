@@ -23,6 +23,16 @@
     <string name="ayuda_name">AYUDA</string>
     <string name="opciones_name">OPCIONES</string>
     <string name="salir_main">Salir</string>
+    <string name="otra_partida">OTRA PARTIDA</string>
+    <string name="tu_turno">Tu turno</string>
+    <string name="turno_j1">Turno del jugador 1</string>
+    <string name="turno_j2">Turno del jugador 2</string>
+    <string name="has_ganado">Has ganado</string>
+    <string name="has_perdido">Has perdido</string>
+    <string name="empate">Empate</string>
+    <string name="gana_j1">Gana el jugador 1</string>
+    <string name="gana_j2">Gana el jugador 2</string>
+    <string name="pensando">Pensando</string>
 
     <string-array name="spDificultad">
         <item>Muy Fácil</item>

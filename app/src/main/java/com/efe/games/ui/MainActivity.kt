@@ -9,6 +9,7 @@ import com.efe.games.R
 import com.efe.games.ui.sudoku.SudokuActivity
 import com.efe.games.ui.sudoku.SudokuOptionsActivity
 import com.efe.games.ui.tictactoe.TicTacToeActivity
+import com.efe.games.ui.tictactoe.TicTacToeOptionsActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         // Alba
         val btn2: Button = findViewById(R.id.buttonTicTacToe)
         btn2.setOnClickListener {
-            val intent = Intent(this, TicTacToeActivity::class.java)
+            val intent = Intent(this, TicTacToeOptionsActivity::class.java)
             startActivity(intent)
         }
 
