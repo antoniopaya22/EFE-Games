@@ -43,6 +43,7 @@
     <string name="mode1v1Infinite">1 contra 1 hasta la victoria</string>
     <string name="modo_de_juego">Modo de juego</string>
     <string name="jugar">Jugar</string>
+    <string name="tres_en_raya">Tres en raya</string>
 
     <string-array name="spDificultad">
         <item>Muy Fácil</item>
