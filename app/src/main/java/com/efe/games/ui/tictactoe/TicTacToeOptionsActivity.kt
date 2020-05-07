@@ -15,6 +15,8 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tictactoe_options)
+        val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
+        radioGroup.check(R.id.rdAILimited)
 
         val btn: Button = findViewById(R.id.btPlayTicTacToe)
         btn.setOnClickListener {
@@ -25,12 +27,17 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
 
     fun play() {
         val intent = Intent(this, TicTacToeActivity::class.java)
-    /*
-        intent.putExtra("dificultad", dificultad)
-        intent.putExtra("tiempo", this.swTiempo.isChecked)
-        intent.putExtra("musica", this.swMusica.isChecked)
-
-     */
+        val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
+        val id = radioGroup.checkedRadioButtonId
+        val checked = findViewById<RadioButton>(id).text
+        var playmode = 0
+        when(checked){
+            getString(R.string.modeAILimited) -> playmode = 0
+            getString(R.string.modeAIInfinite) -> playmode = 1
+            getString(R.string.mode1v1Limited) -> playmode = 2
+            getString(R.string.mode1v1Infinite) -> playmode = 3
+        }
+        intent.putExtra("playMode", playmode)
         startActivity(intent)
     }
 

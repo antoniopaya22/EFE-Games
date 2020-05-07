@@ -18,10 +18,11 @@ class TicTacToeActivity : AppCompatActivity() {
     private lateinit var txtStatus:TextView
     private var thinking: Boolean = false
     private var takenPiece: Int = -1
-    private var playMode: Int = 3
+    private var playMode: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.playMode = intent.getIntExtra("playMode", 0)
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
         initStatus()
@@ -131,9 +132,7 @@ class TicTacToeActivity : AppCompatActivity() {
     }
 
     private fun mode1v1Infinite(currentMove:Int, cell:ImageButton){
-        println("INFINITEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
         if(!TicTacToeController.filledBoard()){
-            println("NOT FILLED")
             mode1v1Limited(currentMove, cell)
         }else{
             if(this.takenPiece == -1){

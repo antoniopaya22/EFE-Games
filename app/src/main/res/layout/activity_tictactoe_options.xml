@@ -34,25 +34,25 @@
             android:id="@+id/rdAILimited"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contra el robot" />
+            android:text="@string/modeAILimited" />
 
         <RadioButton
             android:id="@+id/rdAIInfinite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contra el robot hasta la victoria" />
+            android:text="@string/modeAIInfinite" />
 
         <RadioButton
             android:id="@+id/rd1v1Limited"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1 contra 1" />
+            android:text="@string/mode1v1Limited" />
 
         <RadioButton
             android:id="@+id/rd1v1Infinite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1 contra 1 hasta la victoria" />
+            android:text="@string/mode1v1Infinite" />
 
     </RadioGroup>
 
@@ -60,7 +60,7 @@
         android:id="@+id/txtModeTictactoe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modo de juego"
+        android:text="@string/modo_de_juego"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
         android:id="@+id/btPlayTicTacToe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Jugar"
+        android:text="@string/jugar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

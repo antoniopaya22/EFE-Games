@@ -37,6 +37,12 @@
     <string name="options_habilitar_musica">Habilitar música</string>
     <string name="cambiar_nombre_de_usuario">Cambiar nombre de usuario</string>
     <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="modeAILimited">Contra el robot</string>
+    <string name="modeAIInfinite">Contra el robot hasta la victoria</string>
+    <string name="mode1v1Limited">1 contra 1</string>
+    <string name="mode1v1Infinite">1 contra 1 hasta la victoria</string>
+    <string name="modo_de_juego">Modo de juego</string>
+    <string name="jugar">Jugar</string>
 
     <string-array name="spDificultad">
         <item>Muy Fácil</item>
