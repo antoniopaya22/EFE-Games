@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_efe_games_logo"
         android:label="@string/app_name"
@@ -36,10 +37,15 @@
             android:theme="@style/AppThemeTicTacToeConfiguracion"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".ui.OptionsActivity"
+            android:theme="@style/AppThemeSudokuConfiguracion" />
+        <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePrincipal"
-            tools:ignore="LockedOrientationActivity"></activity>
+            tools:ignore="LockedOrientationActivity" />
+
+        <service android:name=".business.MusicService" />
     </application>
 
 </manifest>

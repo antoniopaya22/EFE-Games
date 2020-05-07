@@ -72,10 +72,6 @@ abstract class MetodoEscritura {
      *  ====================================================
      */
 
-    fun pause() {
-        onPause()
-    }
-
     fun activate() {
         activo = true
         onActivated()
@@ -104,7 +100,6 @@ abstract class MetodoEscritura {
     protected abstract fun createTecladoView(): View?
     protected open fun onActivated() {}
     protected open fun onDeactivated() {}
-    protected open fun onPause() {}
     open fun onCellSelected(cell: Celda?) {}
     open fun onCellTapped(cell: Celda?) {}
 }
