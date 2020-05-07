@@ -66,8 +66,8 @@ class TecladoView : LinearLayout {
         if (!encontrado) id = -1
         for (i in metodosEscritura.indices) {
             val im: MetodoEscritura = metodosEscritura[i]
-            if (im.isMetodoEscrituraViewCreated) im.metodoEscrituraView
-                .setVisibility(if (i == id) View.VISIBLE else View.GONE)
+            if (im.isMetodoEscrituraViewCreated) im.metodoEscrituraView.visibility =
+                if (i == id) View.VISIBLE else View.GONE
         }
         metodoActivo = id
         if (metodoActivo != -1) {
@@ -80,12 +80,6 @@ class TecladoView : LinearLayout {
         var id = metodoActivo + 1
         if (id >= metodosEscritura.size) id = 0
         activarMetodoEscritura(id)
-    }
-
-    fun pause() {
-        for (im in metodosEscritura) {
-            im.pause()
-        }
     }
 
     private fun asegurarControlPanel(id: Int) {

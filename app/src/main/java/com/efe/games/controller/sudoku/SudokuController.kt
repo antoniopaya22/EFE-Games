@@ -75,9 +75,9 @@ object SudokuController {
 
     private fun getHuecosPorDificultad(dificultad: Int): Int =
         when (dificultad) {
-            0 -> 25
-            1 -> 30
-            2 -> 40
+            0 -> 15
+            1 -> 25
+            2 -> 35
             3 -> 45
             else -> 50
         }
@@ -127,8 +127,10 @@ object SudokuController {
         }
         else {
             val minute = (tiempoParaResolver / 1000) / 60
+            val min = if(minute >= 10) minute else "0$minute"
             val seconds = (tiempoParaResolver / 1000) % 60
-            sudokuActivity.setTitle("$minute:$seconds")
+            val sec = if(seconds >= 10) seconds else "0$seconds"
+            sudokuActivity.setTitle("$min:$sec")
         }
     }
 

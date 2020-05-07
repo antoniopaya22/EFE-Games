@@ -85,7 +85,7 @@ class VentanaTecladoDialog(context: Context) : Dialog(context) {
 
     fun colorearNumero(number: Int) {
         botonesNumeros[number]!!.background.colorFilter =
-                LightingColorFilter(ResourcesCompat.getColor(context!!.resources, R.color.colorGreen, null), 0)
+                LightingColorFilter(ResourcesCompat.getColor(context.resources, R.color.colorGreen, null), 0)
     }
 
     fun resetButtons() {

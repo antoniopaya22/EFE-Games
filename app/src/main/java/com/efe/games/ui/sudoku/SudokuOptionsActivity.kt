@@ -1,23 +1,23 @@
 package com.efe.games.ui.sudoku
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.efe.games.R
-import com.efe.games.controller.sudoku.SudokuController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
+import com.efe.games.controller.MusicController
 
 class SudokuOptionsActivity : AppCompatActivity() {
 
     private lateinit var spDificultad: Spinner
     private lateinit var swOpcionesAvanzadas: Switch
     private lateinit var swTiempo: Switch
-    private lateinit var swMusica: Switch
-    private lateinit var btnJugar: FloatingActionButton
+    private lateinit var btnJugar: Button
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,6 @@ class SudokuOptionsActivity : AppCompatActivity() {
         this.spDificultad = findViewById(R.id.spDificultad)
         this.swOpcionesAvanzadas = findViewById(R.id.switchOpcionesAvanzadas)
         this.swTiempo = findViewById(R.id.switchTiempo)
-        this.swMusica = findViewById(R.id.switchMusica)
         this.btnJugar = findViewById(R.id.btnJugar)
 
         ArrayAdapter.createFromResource(this, R.array.spDificultad,
@@ -35,14 +34,9 @@ class SudokuOptionsActivity : AppCompatActivity() {
             spDificultad.adapter = adapter
         }
 
-        swOpcionesAvanzadas.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                swMusica.setVisibility(View.VISIBLE)
-                swTiempo.setVisibility(View.VISIBLE)
-            } else {
-                swMusica.setVisibility(View.INVISIBLE)
-                swTiempo.setVisibility(View.INVISIBLE)
-            }
+        swOpcionesAvanzadas.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) swTiempo.visibility = View.VISIBLE
+            else swTiempo.visibility = View.INVISIBLE
         }
 
         btnJugar.setOnClickListener {
@@ -62,13 +56,15 @@ class SudokuOptionsActivity : AppCompatActivity() {
                 }
                 builder.create()
                 builder.show()
+            }else {
+                jugar()
             }
 
         }
 
     }
 
-    fun jugar() {
+    private fun jugar() {
         val intent = Intent(this, SudokuActivity::class.java)
         val dificultad = when (this.spDificultad.selectedItem) {
             "Muy Fácil"-> 0
@@ -79,8 +75,18 @@ class SudokuOptionsActivity : AppCompatActivity() {
         }
         intent.putExtra("dificultad", dificultad)
         intent.putExtra("tiempo", this.swTiempo.isChecked)
-        intent.putExtra("musica", this.swMusica.isChecked)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
+        if(preferences!!.getBoolean("Musica", true)) MusicController.startMusic(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MusicController.stopMusic(this)
     }
 
 }

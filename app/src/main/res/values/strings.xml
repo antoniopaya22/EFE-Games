@@ -3,7 +3,7 @@
 
     <string name="numpad">Pad numérico</string>
     <string name="dialog">Popup pad</string>
-    <string name="numpad_abbr">Popup</string>
+    <string name="numpad_abbr">Dia</string>
     <string name="dialog_abbr">Pad</string>
     <string name="pad_numerico_1">1</string>
     <string name="pad_numerico_2">2</string>
@@ -20,9 +20,10 @@
     <string name="ventana_teclado_dialog_cerrar">Ok</string>
     <string name="sudoku_name">SUDOKU</string>
     <string name="tres_en_raya_name">TRES EN RAYA</string>
-    <string name="ayuda_name">AYUDA</string>
+    <string name="ayuda_name">INFO</string>
     <string name="opciones_name">OPCIONES</string>
     <string name="salir_main">Salir</string>
+
     <string name="otra_partida">OTRA PARTIDA</string>
     <string name="tu_turno">Tu turno</string>
     <string name="turno_j1">Turno del jugador 1</string>
@@ -33,6 +34,9 @@
     <string name="gana_j1">Gana el jugador 1</string>
     <string name="gana_j2">Gana el jugador 2</string>
     <string name="pensando">Pensando</string>
+    <string name="options_habilitar_musica">Habilitar música</string>
+    <string name="cambiar_nombre_de_usuario">Cambiar nombre de usuario</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
 
     <string-array name="spDificultad">
         <item>Muy Fácil</item>
