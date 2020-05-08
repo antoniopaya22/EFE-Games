@@ -17,14 +17,12 @@ class TicTacToeView(context: Context, st: AttributeSet) : View(context, st) {
     private lateinit var extraBitmap: Bitmap
     private val backgroundColor = ResourcesCompat.getColor(resources, R.color.colorBackground, null)
     private var cellWidth: Float = 0f
-    private var cellHeight: Float = 0f
 
     companion object{
         const val TABLERO_SIZE_DEFAULT = 100
         const val NUMBER_OF_CELLS = 3.0f
         const val LINES_MARGIN = 60.0f
         const val LINES_MARGIN_BT = 180.0f
-        const val NO_COLOR = 0
     }
 
     private fun init(attrs: AttributeSet?) {
@@ -76,7 +74,7 @@ class TicTacToeView(context: Context, st: AttributeSet) : View(context, st) {
         //canvas.drawRGB(255, 255, 255)
 
         linePaint.setARGB(255, 255, 255, 255)
-        linePaint.setStrokeWidth(20f)
+        linePaint.strokeWidth = 20f
         cellWidth = (width / NUMBER_OF_CELLS)
         canvas.drawLine(cellWidth, LINES_MARGIN, cellWidth,cellWidth*3 - LINES_MARGIN_BT, linePaint)
         canvas.drawLine(cellWidth*2, LINES_MARGIN, cellWidth*2,cellWidth*3 - LINES_MARGIN_BT, linePaint)

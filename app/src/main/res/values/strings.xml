@@ -44,6 +44,8 @@
     <string name="modo_de_juego">Modo de juego</string>
     <string name="jugar">Jugar</string>
     <string name="tres_en_raya">Tres en raya</string>
+    <string name="bt1">bt1</string>
+    <string name="bt2">bt2</string>
 
     <string-array name="spDificultad">
         <item>Muy Fácil</item>

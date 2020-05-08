@@ -101,7 +101,7 @@ class TicTacToeActivity : AppCompatActivity() {
                     cell.setImageResource(R.drawable.ic_cross)
                     val unmadeMove:Int = TicTacToeController.unmakeMoveAI()
                     id = resources.getIdentifier("board${unmadeMove}", "id", packageName)
-                    btn = findViewById<ImageButton>(id)
+                    btn = findViewById(id)
                     btn.setImageResource(R.drawable.ic_clean)
 
                     cell.setImageResource(R.drawable.ic_cross)
@@ -125,7 +125,7 @@ class TicTacToeActivity : AppCompatActivity() {
             val nextMove:Int = TicTacToeController.makeMoveAPI()
             if (nextMove >= 0) {
                 val id = resources.getIdentifier("board$nextMove", "id", packageName)
-                val btn: ImageButton = findViewById<ImageButton>(id)
+                val btn: ImageButton = findViewById(id)
                 btn.setImageResource(R.drawable.ic_circle)
             }
             this@TicTacToeActivity.thinking = false

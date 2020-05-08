@@ -29,9 +29,7 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
 
     }
 
-    fun play() {
-
-
+    private fun play() {
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
         val id = radioGroup.checkedRadioButtonId
         val checked = findViewById<RadioButton>(id).text
@@ -49,7 +47,7 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
         }
     }
 
-    fun checkInternetConnection(playmode: Int){
+    private fun checkInternetConnection(playmode: Int){
         InternetCheck(object : InternetCheck.Consumer {
             override fun accept(internet: Boolean?) {
                 if(internet!!) {

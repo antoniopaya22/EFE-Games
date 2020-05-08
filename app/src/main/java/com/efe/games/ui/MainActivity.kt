@@ -15,7 +15,6 @@ import com.efe.games.R
 import com.efe.games.controller.MusicController
 import com.efe.games.controller.UserController
 import com.efe.games.ui.sudoku.SudokuOptionsActivity
-import com.efe.games.ui.tictactoe.TicTacToeActivity
 import com.efe.games.ui.tictactoe.TicTacToeOptionsActivity
 import com.efe.games.ui.util.AnimacionButton
 import kotlin.system.exitProcess
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             crearUsuario()
         }
 
-        // Antonio
+        // SUDOKU
         val btn: Button = findViewById(R.id.buttonSudoku)
         btn.setOnClickListener {
             val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right)
         }
 
-        // Alba
+        // TICTACTOE
         val btn2: Button = findViewById(R.id.buttonTicTacToe)
         btn2.setOnClickListener {
             val myAnim: Animation = AnimationUtils.loadAnimation(activity, R.anim.bounce_animacion)
