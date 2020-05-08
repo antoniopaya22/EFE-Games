@@ -21,40 +21,40 @@
         android:id="@+id/board0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:background="#00000000"
-        app:layout_constraintBottom_toTopOf="@+id/board3"
+        android:contentDescription="@string/bt1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/board1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt1" />
+        app:layout_constraintVertical_bias="0.044"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:background="#00000000"
-        app:layout_constraintBottom_toTopOf="@+id/board4"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="@+id/ticTacToeView"
         app:layout_constraintEnd_toStartOf="@+id/board2"
         app:layout_constraintStart_toEndOf="@+id/board0"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2" />
+        app:layout_constraintVertical_bias="0.044"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:background="#00000000"
-        app:layout_constraintBottom_toTopOf="@+id/board5"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/board1"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.044"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board3"
@@ -62,12 +62,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="#00000000"
-        app:layout_constraintBottom_toTopOf="@+id/board6"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/board4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board0"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.067"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board4"
@@ -75,12 +76,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="#00000000"
-        app:layout_constraintBottom_toTopOf="@+id/board7"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/board5"
         app:layout_constraintStart_toEndOf="@+id/board3"
         app:layout_constraintTop_toBottomOf="@+id/board1"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.067"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board5"
@@ -88,12 +90,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="#00000000"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/board4"
         app:layout_constraintTop_toBottomOf="@+id/board2"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.067"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board6"
@@ -101,11 +105,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="#00000000"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/board7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board3"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.049"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board7"
@@ -113,11 +119,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="#00000000"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="@+id/ticTacToeView"
         app:layout_constraintEnd_toStartOf="@+id/board8"
         app:layout_constraintStart_toEndOf="@+id/board6"
         app:layout_constraintTop_toBottomOf="@+id/board4"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.049"
+        app:srcCompat="@drawable/ic_clean" />
 
     <ImageButton
         android:id="@+id/board8"
@@ -125,11 +133,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="#00000000"
+        android:contentDescription="@string/bt2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/board7"
         app:layout_constraintTop_toBottomOf="@+id/board5"
-        app:srcCompat="@drawable/ic_clean"
-        android:contentDescription="@string/bt2"/>
+        app:layout_constraintVertical_bias="0.049"
+        app:srcCompat="@drawable/ic_clean" />
 
     <Button
         android:id="@+id/btRestart"
@@ -138,6 +148,7 @@
         android:padding="20dp"
         android:text="@string/otra_partida"
         android:textSize="18sp"
+        android:background="@drawable/init_button"
         app:layout_constraintBottom_toBottomOf="@+id/ticTacToeView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +166,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/board7"
-        app:layout_constraintVertical_bias="0.179" />
+        app:layout_constraintVertical_bias="0.25" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

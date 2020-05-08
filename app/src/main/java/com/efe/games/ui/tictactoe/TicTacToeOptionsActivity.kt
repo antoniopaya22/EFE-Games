@@ -67,7 +67,6 @@ class TicTacToeOptionsActivity : AppCompatActivity() {
     }
 
     fun showNoInternetAlert(){
-        println("ALERTTTTTTTTTTT")
         val builder: AlertDialog.Builder = this.let {
             AlertDialog.Builder(it)
         }

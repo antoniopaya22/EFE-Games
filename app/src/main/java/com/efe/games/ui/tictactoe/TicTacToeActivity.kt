@@ -34,6 +34,7 @@ class TicTacToeActivity : AppCompatActivity() {
         this.takenPiece = -1
         setContentView(R.layout.activity_tictactoe)
         txtStatus = findViewById(R.id.txtStatus)
+        TicTacToeController.restartGame()
 
         // Musica
         preferences = getSharedPreferences("EFE", Context.MODE_PRIVATE)
@@ -120,17 +121,44 @@ class TicTacToeActivity : AppCompatActivity() {
     }
 
     private fun moveFromAPI(){
+
         uiScope.launch {
             this@TicTacToeActivity.thinking = true
-            val nextMove:Int = TicTacToeController.makeMoveAPI()
-            if (nextMove >= 0) {
-                val id = resources.getIdentifier("board$nextMove", "id", packageName)
-                val btn: ImageButton = findViewById(id)
-                btn.setImageResource(R.drawable.ic_circle)
+            try {
+                val nextMove: Int = TicTacToeController.makeMoveAPI()
+                if (nextMove >= 0) {
+                    val id = resources.getIdentifier("board$nextMove", "id", packageName)
+                    val btn: ImageButton = findViewById(id)
+                    btn.setImageResource(R.drawable.ic_circle)
+                }
+                this@TicTacToeActivity.thinking = false
+                this@TicTacToeActivity.setStatus()
+            }catch(e: Exception){
+                showNoInternetAlert()
             }
-            this@TicTacToeActivity.thinking = false
-            this@TicTacToeActivity.setStatus()
         }
+    }
+
+    fun showNoInternetAlert(){
+        val builder: AlertDialog.Builder = this.let {
+            AlertDialog.Builder(it)
+        }
+        builder
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setMessage("Conecta tu dispositivo a la red para jugar en este modo")
+            .setTitle("No se pudo conectar")
+            .setCancelable(false)
+        builder.apply {
+            setPositiveButton("Salir del modo") { _, _ ->
+                salir()
+            }
+            setNegativeButton(R.string.otra_partida){ _, _ ->
+                thinking = false
+                onRestartGame()
+            }
+        }
+        builder.create()
+        builder.show()
     }
 
     private fun mode1v1Limited(currentMove:Int, cell:ImageButton):Int{
@@ -203,7 +231,28 @@ class TicTacToeActivity : AppCompatActivity() {
                 if (status == ECodesTicTacToe.PLAYING_CODE) {
                     txtStatus.text = getString(R.string.tu_turno)
                 } else if (status == ECodesTicTacToe.P1_CODE) {
-                    UserController.addPuntos(100)
+                    val puntos:Long = 100
+                    val builder: AlertDialog.Builder = this.let {
+                        AlertDialog.Builder(it)
+                    }
+                    builder
+                        .setIcon(android.R.drawable.checkbox_on_background)
+                        .setMessage("Has ganado al robot.\n " +
+                                "Como recompensa has ganado $puntos puntos")
+                        .setTitle("¡FELICIDADES!")
+                        .setCancelable(false)
+                    builder.apply {
+                        setPositiveButton("Salir") { _, _ ->
+                            salir()
+                        }
+                        setNegativeButton(R.string.otra_partida){ _, _ ->
+                            thinking = false
+                            onRestartGame()
+                        }
+                    }
+                    builder.create()
+                    builder.show()
+                    UserController.addPuntos(puntos)
                     txtStatus.text = getString(R.string.has_ganado)
                 } else if (status == ECodesTicTacToe.P2_CODE) {
                     txtStatus.text = getString(R.string.has_perdido)

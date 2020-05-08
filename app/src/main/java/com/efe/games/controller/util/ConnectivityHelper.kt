@@ -1,7 +1,5 @@
 package com.efe.games.controller.util
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.AsyncTask
 import java.io.IOException
 import java.net.InetSocketAddress
@@ -19,7 +17,6 @@ internal class InternetCheck(private val mConsumer: Consumer) : AsyncTask<Void, 
 
     override fun doInBackground(vararg voids: Void): Boolean? {
         try {
-            println("TRYING TO CONNECT")
             val sock = Socket()
             sock.connect(InetSocketAddress("8.8.8.8", 53), 1500)
             sock.close()
